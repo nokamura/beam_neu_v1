@@ -1,0 +1,52 @@
+# INSTALL
+  ./makelib
+
+# PARAMETERS
+  see params.card
+
+# Files to be modified when adding new parameters
+  params.card
+  bsffrd.f
+  inc/params.inc
+  set_params.f
+  init_minuit.f
+  write_input.f (if needed)
+  temp/params.card_def (update as in params.card)
+
+# ROUTINES
+  ./run.sh: core program for event number calculation & minimization
+  ./minimize_dchi2.sh: for minimization, scanning input CP phase
+  ./chi2_oab_all.sh: for Fig.9 in Oki paper
+  ./chi2_oabfar_all.sh: for Fig.7,8 in Re-evaluation paper
+
+# OLD ROUTINES (NOT USED ANYMORE)
+  ./job_dchi2.sh: for minimization, scanning ndiv points on dCP
+  ./job_fig8.sh: minimization for different detector, OAB, MH and dCP
+                 output datat for Fig.8 in Oki paper 
+
+# HOW TO RUN
+1. basic mode
+   ./run.sh [run_name] [run_mode] [display] [mail]
+   run_mode: 1:Serial mode 2:Parallel mode
+   display: 0: don't display the shell output 1:display the output
+   mail: 0:don't send a notification mail when a job is finished 1:send
+
+2. dchi2 minimization mode
+   ./minimize_dchi2.sh [run_name] [mail]
+
+
+# Cautions
+  13.MAY.31: accuracy of fiitting parameter should be less than that
+  	     of corresponding true parameter. Otherwise minimization
+	     routine shows numerical instability.
+
+  13.Jun.01: sin(2th_atm)^2 in ithatm=1 or sin(2th_23)^2 in thatm=2 
+   	     should be < 0.99. Otherwise, the diagonalization routine
+             fails and returns disordered eigenvalues (i.e., lam(2) and 
+	     lam(3) are flipped). 
+
+# Version history  
+Version 1.1
+  14.Mar.14: NC events are decomposed w.r.t. the interaction mode (NCQE,NCRS,NCDI,NCCO/NCDF)
+Version 1
+  14.Mar.7: pull factor and DeltaChi^2_min output routine added

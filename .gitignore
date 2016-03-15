@@ -1,0 +1,16 @@
+*.o
+*~
+*#
+*.log
+*.eps
+*.out
+fort*
+.DS_Store
+date.txt
+date_server.txt
+rslt_*
+test
+main
+status
+data/*
+xsec_test

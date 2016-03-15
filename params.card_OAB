@@ -1,0 +1,178 @@
+C*************************************************
+C System parameters
+C
+C mode = 0:event distribution 1:MINUIT minimization
+C iNnm = 0:nu_mu + anti-nu_mu from the nu_mu focusing beam is not detected 1:detected
+C iNne = 0:nu_e + anti-nu_e from the nu_mu focusing beam is not detected 1:detected
+C iNam = 0:nu_mu + anti-nu_mu from the anti-nu_mu focusing beam is not detected 1:detected
+C iNae = 0:nu_e + anti-nu_e from the anti-nu_mu focusing beam is not detected 1:detected
+C ndiv: The division number for a parameter scanning
+C ihisto = 0:no histo 1:histo(with simpson)  2:histo(center-value*0.05MeV)
+C ismear = 0:no smearing 1:smearing
+C ihfunc = 0:normal mode(under construction) 
+C          1:flux 2:Osc.Prob. 3:Xsec 4:flux*Osc.prob.*Xsec
+C          5:semarring function for CCQE 11:normal mode(NCtotal) 100:Free
+C*************************************************
+  mode  2
+  iSK   0
+  iOki   0
+  iKorea  1
+  iNnm   1        ! For mode=1&2
+  iNne   1        ! For mode=1&2
+  iNam   1	  ! For mode=1&2
+  iNae   1        ! For mode=1&2
+  ndiv   0
+  serror  1d-2
+  snmax   10 
+  ifixL   1
+  ifluc   0
+  ihisto   2
+  ismear   0
+  ihfunc   4
+  basic_binsize 0.05
+C*************************************************
+C Experiment parameters
+C 
+C beam: focus beam type: 2:nu_mu -2:anti-nu_mu 
+C OAB: Off-Axis-Angle @Far-detector: 0/0.5/0.6/0.9/1.0/1.4/1.5/2.0/2.5/3.0 [degree]
+C      In minimization mode (mode=1), OAB is the Off-axis beam angle @ SK: 2/2.5/3
+C nu_mode: neutrino type traveling to a far detector from the beam source
+C          1:nu_e 2:nu_mu -1:anti-nu_e -2:anti-nu_mu 
+C detect: the neutrino type to be detected @ a far detector
+C Emin (Emax): The minimum (maximum) energy for an analysis [GeV]
+C binsize: binsize in the unit of a binning parameter 
+C*************************************************
+  beam  -2         ! For mode=0 & 2
+  OAB   OOAABB
+  nu_mode -2      ! For mode=0
+  detect  -2     ! For mode=0
+c  L   1260d0 
+  L   1d3
+c  L   0.28d0
+  Lmax    2000    ! not used
+  P       20d0    ! not used
+  V       100d0
+  R       0.12d0  ! not used
+  Y       2.5d0  
+  Eres    30d0    ! not used
+  Eres_nl 1d0     ! not used
+  Emin    0d0     ! For mode=0 & 2
+  Emax    5.9d0     ! For mode=0 & 2
+  binsize_factor 4    ! For mode=0 & 2
+C*************************************************
+C Physics parameters
+C iinput: 1:ssol 2:s12
+C ithatm: 1:thatm = s2atm2  2:thatm = satm2
+C rho: L=1000km:2.90, 1200km:3.05 (1107.5857)
+C*************************************************
+  MH   1
+  rho   2.90d0
+c  rho   3.05d0
+  iinput   1
+  ithatm   2
+c  s2sol_2   0.857d0
+  s2sol_2   0.852d0
+  thatm   0.5d0
+c  s2rct_2   0.098d0
+  s2rct_2   0.08d0
+  dm21_2   7.50d-5
+c  dm31_2   2.32d-3
+  dm31_2   2.35d-3
+  dCP   0d0
+c  dCP   1.5708d0
+c  dCP   3.141592d0
+c  dCP   4.712388d0
+c  dCP  0.785398d0
+C*************************************************
+C Fitting parameters
+C*************************************************
+  fs2sol_2   0.852
+  err_s2sol_2   0.025
+  fthatm   0.99
+  err_thatm   0.35
+  fs2rct_2   0.08
+  err_s2rct_2   0.01
+  fdm21_2   7.5d-5
+  err_dm21_2   0.2d-5
+  fdm31_2   2.35d-3
+  err_dm31_2   0.1d-3
+  fdCP         3.1415
+C  fdCP   5.6520
+C  fdCP   2.32
+C  fdCP   6.21
+C  fdCP   0d0
+  err_dCP   3.14
+C*************************************************
+C Systematic Errors (correlated)
+C*************************************************
+  fCCQEn      1d0
+  err_fCCQEn  0.03   
+  fCCQEa      1d0
+  err_fCCQEa  0.03
+C*************************************************
+C Systematic Errors (uncorrelated)
+C*************************************************
+CCCCC  SK  CCCCCCCCC
+  fS        1.00
+  err_fS    0.03
+  fSrho     1.00
+  err_fSrho 0.03
+  fSnmn     1.00
+  err_fSnmn 0.03
+  fSnen     1.00
+  err_fSnen 0.03
+  fSnma     1.00
+  err_fSnma 0.03
+  fSnea     1.00
+  err_fSnea 0.03
+  fSamn     1.00
+  err_fSamn 0.03
+  fSaen     1.00
+  err_fSaen 0.03
+  fSama     1.00
+  err_fSama 0.03
+  fSaea     1.00
+  err_fSaea 0.03
+CCCCC  Oki  CCCCCCCCC
+  fO        1.00
+  err_fO    0.03
+  fOrho     1.00
+  err_fOrho 0.03
+  fOnmn     1.00
+  err_fOnmn 0.03
+  fOnen     1.00
+  err_fOnen 0.03
+  fOnma     1.00
+  err_fOnma 0.03
+  fOnea     1.00
+  err_fOnea 0.03
+  fOamn     1.00
+  err_fOamn 0.03
+  fOaen     1.00
+  err_fOaen 0.03
+  fOama     1.00
+  err_fOama 0.03
+  fOaea     1.00
+  err_fOaea 0.03
+CCCCC  Korea  CCCCCCCCC
+  fK        1.00
+  err_fK    0.03
+  fKrho     1.00
+  err_fKrho 0.03
+  fKnmn     1.00
+  err_fKnmn 0.03
+  fKnen     1.00
+  err_fKnen 0.03
+  fKnma     1.00
+  err_fKnma 0.03
+  fKnea     1.00
+  err_fKnea 0.03
+  fKamn     1.00
+  err_fKamn 0.03
+  fKaen     1.00
+  err_fKaen 0.03
+  fKama     1.00
+  err_fKama 0.03
+  fKaea     1.00
+  err_fKaea 0.03
+CEND_OF_DATA
