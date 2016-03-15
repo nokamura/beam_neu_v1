@@ -1,5 +1,5 @@
 # INSTALL
-  ./makelib
+  ./makelib.sh
 
 # PARAMETERS
   see params.card

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-rm -rf lib/*
+rm -rf lib
+mkdir lib
 
 cd minuit_f
 make clean
