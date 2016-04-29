@@ -15,7 +15,7 @@ C ihfunc = 0:normal mode(under construction)
 C          1:flux 2:Osc.Prob. 3:Xsec 4:flux*Osc.prob.*Xsec
 C          5:semarring function for CCQE 11:normal mode(NCtotal) 100:Free
 C*************************************************
-  mode  1
+  mode  0
   iSK   1
    Srho  2.60d0
    SV    22.5d0 ! fiducial volume
@@ -36,7 +36,7 @@ C*************************************************
    Ommin    0.4d0 
    Ommax    5.0d0 
    Obfactor 1  ! should be 4 for mode = 1    
-  iKr   0
+  iKr   1
    Krho  2.9d0
    KV     100d0
    KL     1000

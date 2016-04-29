@@ -380,7 +380,7 @@ c      z_dat(115) = 6               ! ihfunc
       call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
      &     ,xl,evform,serror,snmax,ihisto,eventout
      &     ,heventout,neventout,ierr) 
-      open(1,file="flux_P_xsec.dat",status="replace")
+      open(1,file="flux_P_xsec_2.dat",status="replace")
       do i = 0,nbins_loc-1
          write(1,*) xl(i),eventout(i+1)
       enddo

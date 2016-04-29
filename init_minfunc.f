@@ -34,6 +34,8 @@ C     ----------
       if (mode.eq.1) then !for minimization
          rnevent_ren = -1  ! -1:No Normalize events other:Normalize events
       endif
+
+      nu_mode = 1 ! dummy nu_mode for make_basic_data routine
     
       return
       end
