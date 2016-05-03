@@ -15,5 +15,4 @@ cd ..
 
 echo `pwd` > maindir.txt
 
-
 ./set_xsec.sh xsecNC_def
