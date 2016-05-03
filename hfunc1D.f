@@ -108,31 +108,31 @@ c     oscillation parameter check
 
       hdCP = z(6)/360d0*2*pi ! convert degree to radian
       if (z(7).ge.0) then
-         hfCCQEn = z(7)
+         hfCCQEn = z(7) ! CCQE-xsec normalization factor for neutrino 
       elseif (z(7).lt.0) then
          hfunc1D = 0d0
          return
       endif
       if (z(8).ge.0) then
-         hfCCQEa = z(8)
+         hfCCQEa = z(8) ! CCQE-xsec normalization factor for anti-neutrino 
       elseif (z(8).lt.0) then
          hfunc1D = 0d0
          return
       endif
       if (z(51).ge.0) then
-         hfCCResn = z(51)
+         hfCCResn = z(51) ! CCRes-xsec normalization factor for neutrino 
       elseif (z(51).lt.0) then
          hfunc1D = 0d0
          return
       endif
       if (z(52).ge.0) then
-         hfCCResa = z(52)
+         hfCCResa = z(52) ! CCRes-xsec normalization factor for anti-neutrino 
       elseif (z(52).lt.0) then
          hfunc1D = 0d0
          return
       endif
       if (z(53).ge.0) then
-         hfpi0 = z(53)
+         hfpi0 = z(53) ! NCpi0BG-xsec normalization factor
       elseif (z(53).lt.0) then
          hfunc1D = 0d0
          return
@@ -261,13 +261,13 @@ CCC     Cross sections
          if (ismear.eq.0) then
             frac = 0d0
             if (iCCQE.eq.1) then
-               call get_xsecfrac3(E,icc,1,1,detect,frac1)
-               call get_xsecfrac3(E,icc,1,2,detect,frac2)
+               call get_xsecfrac3(E,icc,1,1,detect,frac1) ! CCQE-H
+               call get_xsecfrac3(E,icc,1,2,detect,frac2) ! CCQE-O
                frac = frac +fxsec_CCQE*(frac1 +frac2)
             endif
             if (iCCRes.eq.1) then
-               call get_xsecfrac3(E,icc,1,3,detect,frac3)
-               call get_xsecfrac3(E,icc,1,4,detect,frac4)
+               call get_xsecfrac3(E,icc,1,3,detect,frac3) ! CCRes-H
+               call get_xsecfrac3(E,icc,1,4,detect,frac4) ! CCRes-O
                frac = frac +fxsec_CCRes*(frac3 +frac4)
             endif
 c            xsec = xsec_CC(detect,E)*frac  ! for re-evaluation paper
