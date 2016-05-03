@@ -275,8 +275,8 @@ c            xsec = fxsec_CCQE*xsec_CCQE(detect,E)
 c            xsec = xsec_CCQE(detect,E)
             xsec = xsec_CCQE(detect,E)*frac
          elseif (ismear.eq.1) then
-            xsec = xsec_CC(detect,E) ! for re-evaluation paper
-c            xsec = xsec_CCQE(detect,E)
+c            xsec = xsec_CC(detect,E) ! for re-evaluation paper
+            xsec = xsec_CCQE(detect,E)
          endif
       elseif (icc.eq.2) then
 CCC     Fluxes ! Total flux is used for NC events   
