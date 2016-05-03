@@ -15,7 +15,7 @@ C ihfunc = 0:normal mode(under construction)
 C          1:flux 2:Osc.Prob. 3:Xsec 4:flux*Osc.prob.*Xsec
 C          5:semarring function for CCQE 11:normal mode(NCtotal) 100:Free
 C*************************************************
-  mode  1
+  mode  0
   iSK   1
    Srho  2.60d0
    SV    22.5d0 ! fiducial volume

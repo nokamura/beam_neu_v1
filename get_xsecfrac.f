@@ -1,8 +1,17 @@
       subroutine get_xsecfrac3(E,icc,ixsec,iproc,inutype,frac)
-C     ****************************************************
+C     *******************************************************************
 C     By Yoshitaro Takaesu @KIAS Mar 14 2014
 C     For Separated CC and NC xsec folder
-C     ****************************************************
+C     Arguments
+C        E = incoming neutrino energy
+C        icc = 1:CC 2:NC
+C        ixsec = 0:NC 1pi0 1:NC pi0-bg (polfit) 2:NC pi0-bg (old)
+C        iproc (icc=1) = 1:CCQE-H 2:CCQE-O 3:Res-H 4:Res-O
+C        iproc (icc=2) = 1:NCQE 2:NCRes 3:NCDI 4:NCCoh+NCDiff 5:NC Total
+C        inutype = incoming neutrino flavor
+C     Output
+C        frac
+C     *******************************************************************
       implicit none
 C     GLOBAL VARIABLES
       integer oi

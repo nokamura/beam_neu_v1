@@ -27,7 +27,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 CCCCCCCCCCCCCCCC   Data Taking  CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       if (idata.eq.1) then
-c         call make_basic_data
+         call make_basic_data
 c         call make_prob_data
          call get_event_all(z_dat,hErec_raw_dat)
          call get_recevent(z_dat,nbins,hErec_raw_dat,hErec_dat)
