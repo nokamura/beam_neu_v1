@@ -26,6 +26,8 @@ OBJS_main       = main.o hfunc1D.o minfunc.o smearing.o gran.o funcs.o\
 OBJS_smeardist_mono  = smeardist_mono.o get_nudist_mode.o MakeHisto1D.o \
 		       hsimpson1D.o fErec_dist.o get_xsecfrac.o read_histo.o
 
+OBJS_flux       = interpolate_flux.o make_flux.o
+
 OBJS_test       = test.o apply_Ereccut.o bining.o
 
 .f.o:
@@ -36,6 +38,9 @@ main: $(OBJS_main)
 
 smeardist_mono: $(OBJS_smeardist_mono)
 	 $(F77) $(FFLAGS) $(LIBDIR) $(OBJS_smeardist_mono) $(LIBS) -o $@
+
+flux: $(OBJS_flux)
+	 $(F77) $(FFLAGS) $(LIBDIR) $(OBJS_flux) $(LIBS) -o $@
 
 test: $(OBJS_test)
 	 $(F77) $(FFLAGS) $(LIBDIR) $(OBJS_test) $(LIBS) -o $@

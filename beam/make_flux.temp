@@ -1,0 +1,11 @@
+      program make_flux
+      implicitnone
+     
+      integer neu
+      real*8 oab
+      
+      neu = NNEU ! beam type: neu = 1: nu_mu fucusing beam -1: anti-nu_mu focusing beam
+      oab = OOAB
+      call interpolate_flux(neu,oab)
+
+      end
