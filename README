@@ -13,6 +13,17 @@
   write_input.f (if needed)
   temp/params.card_def (update as in params.card)
 
+# How to add new OAB fluxes
+  ./make_flux.sh neu OAB name
+      neu: 1:nu_mu focusing beam -1:anti-nu_mu focusing beam
+      OAB: OAB angle
+      name: array name which contain the flux distribution
+  modify funcs.f
+      flux_beam function:
+         add "include 'beam/oab***.inc'" line
+	 add "elseif (oab.eq.**) then"
+             "    flux = read_histo(oab***,300,5,binw,icol,E)" lines
+
 # ROUTINES
   ./run.sh: core program for event number calculation & minimization
   ./minimize_dchi2.sh: for minimization, scanning input CP phase

@@ -60,6 +60,9 @@ C     GLOBAL VARIABLES
       include 'beam/oab06n.inc'
       include 'beam/oab09n.inc'
       include 'beam/oab10n.inc'
+      include 'beam/oab11n.inc'
+      include 'beam/oab12n.inc'
+      include 'beam/oab13n.inc'
       include 'beam/oab14n.inc'
       include 'beam/oab15n.inc'
       include 'beam/oab20n.inc'
@@ -70,6 +73,9 @@ C     GLOBAL VARIABLES
       include 'beam/oab06a.inc'
       include 'beam/oab09a.inc'
       include 'beam/oab10a.inc'
+      include 'beam/oab11a.inc'
+      include 'beam/oab12a.inc'
+      include 'beam/oab13a.inc'
       include 'beam/oab14a.inc'
       include 'beam/oab15a.inc'
       include 'beam/oab20a.inc'
@@ -115,28 +121,73 @@ c      binw = 0.05d0
 c      if (abs(v1).eq.1) then
 c         stop
 c      elseif (v1.eq.1) then
+      flux = 0d0  ! initialize flux
       if (v1.eq.1) then
-         if (oab.eq.0d0) flux = read_histo(oab00n,300,5,binw,icol,E)
-         if (oab.eq.0.5d0) flux = read_histo(oab05n,300,5,binw,icol,E)
-         if (oab.eq.0.6d0) flux = read_histo(oab06n,300,5,binw,icol,E)
-         if (oab.eq.0.9d0) flux = read_histo(oab09n,300,5,binw,icol,E)
-         if (oab.eq.1.0d0) flux = read_histo(oab10n,300,5,binw,icol,E)
-         if (oab.eq.1.4d0) flux = read_histo(oab14n,300,5,binw,icol,E)
-         if (oab.eq.1.5d0) flux = read_histo(oab15n,300,5,binw,icol,E)
-         if (oab.eq.2.0d0) flux = read_histo(oab20n,300,5,binw,icol,E)
-         if (oab.eq.2.5d0) flux = read_histo(oab25n,300,5,binw,icol,E)
-         if (oab.eq.3.0d0) flux = read_histo(oab30n,300,5,binw,icol,E)
+         if (oab.eq.0d0) then
+            flux = read_histo(oab00n,300,5,binw,icol,E)
+         elseif (oab.eq.0.5d0) then
+            flux = read_histo(oab05n,300,5,binw,icol,E)
+         elseif (oab.eq.0.6d0) then
+            flux = read_histo(oab06n,300,5,binw,icol,E)
+         elseif (oab.eq.0.9d0) then
+            flux = read_histo(oab09n,300,5,binw,icol,E)
+         elseif (oab.eq.1.0d0) then
+            flux = read_histo(oab10n,300,5,binw,icol,E)
+         elseif (oab.eq.1.1d0) then
+            flux = read_histo(oab11n,300,5,binw,icol,E)
+         elseif (oab.eq.1.2d0) then
+            flux = read_histo(oab12n,300,5,binw,icol,E)
+         elseif (oab.eq.1.3d0) then
+            flux = read_histo(oab13n,300,5,binw,icol,E)
+         elseif (oab.eq.1.4d0) then
+            flux = read_histo(oab14n,300,5,binw,icol,E)
+         elseif (oab.eq.1.5d0) then
+            flux = read_histo(oab15n,300,5,binw,icol,E)
+         elseif (oab.eq.2.0d0) then
+            flux = read_histo(oab20n,300,5,binw,icol,E)
+         elseif (oab.eq.2.5d0) then
+            flux = read_histo(oab25n,300,5,binw,icol,E)
+         elseif (oab.eq.3.0d0) then
+            flux = read_histo(oab30n,300,5,binw,icol,E)
+         else
+            flux = 0d0
+            write(*,*) "ERROR: ",oab," OAB flux may not be implemented"
+     &       ," for nu_mu focusing beams."
+     &       ," Please check flux_beam function in funcs.f"
+         endif
       elseif (v1.eq.-1) then
-         if (oab.eq.0d0) flux = read_histo(oab00a,300,5,binw,icol,E)
-         if (oab.eq.0.5d0) flux = read_histo(oab05a,300,5,binw,icol,E)
-         if (oab.eq.0.6d0) flux = read_histo(oab06a,300,5,binw,icol,E)
-         if (oab.eq.0.9d0) flux = read_histo(oab09a,300,5,binw,icol,E)
-         if (oab.eq.1.0d0) flux = read_histo(oab10a,300,5,binw,icol,E)
-         if (oab.eq.1.4d0) flux = read_histo(oab14a,300,5,binw,icol,E)
-         if (oab.eq.1.5d0) flux = read_histo(oab15a,300,5,binw,icol,E)
-         if (oab.eq.2.0d0) flux = read_histo(oab20a,300,5,binw,icol,E)
-         if (oab.eq.2.5d0) flux = read_histo(oab25a,300,5,binw,icol,E)
-         if (oab.eq.3.0d0) flux = read_histo(oab30a,300,5,binw,icol,E)
+         if (oab.eq.0d0) then
+            flux = read_histo(oab00a,300,5,binw,icol,E)
+         elseif (oab.eq.0.5d0) then
+            flux = read_histo(oab05a,300,5,binw,icol,E)
+         elseif (oab.eq.0.6d0) then
+            flux = read_histo(oab06a,300,5,binw,icol,E)
+         elseif (oab.eq.0.9d0) then
+            flux = read_histo(oab09a,300,5,binw,icol,E)
+         elseif (oab.eq.1.0d0) then
+            flux = read_histo(oab10a,300,5,binw,icol,E)
+         elseif (oab.eq.1.1d0) then
+            flux = read_histo(oab11a,300,5,binw,icol,E)
+         elseif (oab.eq.1.2d0) then
+            flux = read_histo(oab12a,300,5,binw,icol,E)
+         elseif (oab.eq.1.3d0) then
+            flux = read_histo(oab13a,300,5,binw,icol,E)
+         elseif (oab.eq.1.4d0) then
+            flux = read_histo(oab14a,300,5,binw,icol,E)
+         elseif (oab.eq.1.5d0) then
+            flux = read_histo(oab15a,300,5,binw,icol,E)
+         elseif (oab.eq.2.0d0) then
+            flux = read_histo(oab20a,300,5,binw,icol,E)
+         elseif (oab.eq.2.5d0) then
+            flux = read_histo(oab25a,300,5,binw,icol,E)
+         elseif (oab.eq.3.0d0) then
+            flux = read_histo(oab30a,300,5,binw,icol,E)
+         else
+            flux = 0d0
+            write(*,*) "ERROR: ",oab," OAB flux may not be implemented"
+     &      ," for nu_mu focusing beams."
+     &       ," Please check flux_beam function in funcs.f"
+         endif
 c         if (mod(oab,3).lt.0.1) flux = read_histo(oab30a,300,5,binw,icol,E)
 c      elseif (abs(v1).eq.3) then
 c         stop
