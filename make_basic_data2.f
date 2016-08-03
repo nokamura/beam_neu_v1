@@ -57,7 +57,8 @@ C
       if (iSK.eq.1) then
          L = SL
          oab = SOAB
-         z_dat(120) = 1         ! nu_e flux
+C         z_dat(120) = 1         ! nu_e flux
+         nu_mode = 1         ! nu_e flux
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
@@ -68,7 +69,7 @@ C
             write(1,*) xl(i),eventout(i+1)
          enddo
          close(1)
-         z_dat(120) = 2         ! nu_mode
+         nu_mode = 2         ! nu_mode
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
@@ -79,7 +80,7 @@ C
             write(1,*) xl(i),eventout(i+1)
          enddo
          close(1)
-         z_dat(120) = -1        ! nu_mode
+         nu_mode = -1        ! nu_mode
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
@@ -90,7 +91,7 @@ C
             write(1,*) xl(i),eventout(i+1)
          enddo
          close(1)
-         z_dat(120) = -2        ! nu_mode
+         nu_mode = -2        ! nu_mode
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
@@ -105,7 +106,7 @@ C
       if (iOki.eq.1) then
          L = OL
          oab = OOAB
-         z_dat(120) = 1         ! nu_e flux
+         nu_mode = 1         ! nu_e flux
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
@@ -116,7 +117,7 @@ C
             write(1,*) xl(i),eventout(i+1)
          enddo
          close(1)
-         z_dat(120) = 2         ! nu_mode
+         nu_mode = 2         ! nu_mode
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
@@ -127,7 +128,7 @@ C
             write(1,*) xl(i),eventout(i+1)
          enddo
          close(1)
-         z_dat(120) = -1        ! nu_mode
+         nu_mode = -1        ! nu_mode
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
@@ -138,7 +139,7 @@ C
             write(1,*) xl(i),eventout(i+1)
          enddo
          close(1)
-         z_dat(120) = -2        ! nu_mode
+         nu_mode = -2        ! nu_mode
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
@@ -153,7 +154,7 @@ C
       if (iKr.eq.1) then
          L = KL
          oab = KOAB         
-         z_dat(120) = 1         ! nu_e flux
+         nu_mode = 1         ! nu_e flux
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
@@ -164,7 +165,7 @@ C
             write(1,*) xl(i),eventout(i+1)
          enddo
          close(1)
-         z_dat(120) = 2         ! nu_mode
+         nu_mode = 2         ! nu_mode
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
@@ -175,7 +176,7 @@ C
             write(1,*) xl(i),eventout(i+1)
          enddo
          close(1)
-         z_dat(120) = -1        ! nu_mode
+         nu_mode = -1        ! nu_mode
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
@@ -186,7 +187,7 @@ C
             write(1,*) xl(i),eventout(i+1)
          enddo
          close(1)
-         z_dat(120) = -2        ! nu_mode
+         nu_mode = -2        ! nu_mode
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
