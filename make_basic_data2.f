@@ -17,6 +17,8 @@ C     LOCAL VARIABLES
       real*8 eventout(maxnbin),heventout(maxnbin),neventout,Y_tmp
       real*8 event_tmp(maxnbin),hevent_tmp(maxnbin),nevent_tmp
       real*8 E,frac,eventout2(maxnbin),iD_tmp,rho_tmp,oab_tmp
+      real*8 eventout_nm(maxnbin),eventout_am(maxnbin)
+      real*8 eventout_ne(maxnbin),eventout_ae(maxnbin)
       integer nbins_loc
       real*8 xmin,xmax,binsize_loc
       real*8 xl(0:maxnbin),yyl(0:maxnbin)
@@ -57,149 +59,186 @@ C
       if (iSK.eq.1) then
          L = SL
          oab = SOAB
-C         z_dat(120) = 1         ! nu_e flux
+
+         beam = 1
+         binsize_loc = basic_binsize*binsize_factor
+         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
+
          nu_mode = 1         ! nu_e flux
-         binsize_loc = basic_binsize*binsize_factor
-         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,xl,evform,serror,snmax,ihisto,eventout_ne
      &        ,heventout,neventout,ierr) 
-         open(1,file="flux_ne_SK.dat",status="replace")
+         nu_mode = 2         ! nu_mu flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_nm
+     &        ,heventout,neventout,ierr) 
+         nu_mode = -1         ! anti-nu_e flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_ae
+     &        ,heventout,neventout,ierr) 
+         nu_mode = -2         ! anti-nu_mu flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_am
+     &        ,heventout,neventout,ierr) 
+
+         open(1,file="fluxn_SK.dat",status="replace")
          do i = 0,nbins_loc-1
-            write(1,*) xl(i),eventout(i+1)
+            write(1,*) xl(i),eventout_nm(i+1),eventout_am(i+1)
+     &           ,eventout_ne(i+1),eventout_ae(i+1)
          enddo
          close(1)
-         nu_mode = 2         ! nu_mode
+
+         beam = -1
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
+
+         nu_mode = 1         ! nu_e flux
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,xl,evform,serror,snmax,ihisto,eventout_ne
      &        ,heventout,neventout,ierr) 
-         open(1,file="flux_nm_SK.dat",status="replace")
+         nu_mode = 2         ! nu_mu flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_nm
+     &        ,heventout,neventout,ierr) 
+         nu_mode = -1         ! anti-nu_e flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_ae
+     &        ,heventout,neventout,ierr) 
+         nu_mode = -2         ! anti-nu_mu flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_am
+     &        ,heventout,neventout,ierr) 
+
+         open(1,file="fluxa_SK.dat",status="replace")
          do i = 0,nbins_loc-1
-            write(1,*) xl(i),eventout(i+1)
+            write(1,*) xl(i),eventout_nm(i+1),eventout_am(i+1)
+     &           ,eventout_ne(i+1),eventout_ae(i+1)
          enddo
          close(1)
-         nu_mode = -1        ! nu_mode
-         binsize_loc = basic_binsize*binsize_factor
-         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout
-     &        ,heventout,neventout,ierr) 
-         open(1,file="flux_ae_SK.dat",status="replace")
-         do i = 0,nbins_loc-1
-            write(1,*) xl(i),eventout(i+1)
-         enddo
-         close(1)
-         nu_mode = -2        ! nu_mode
-         binsize_loc = basic_binsize*binsize_factor
-         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout
-     &        ,heventout,neventout,ierr) 
-         open(1,file="flux_am_SK.dat",status="replace")
-         do i = 0,nbins_loc-1
-            write(1,*) xl(i),eventout(i+1)
-         enddo
-         close(1)
+
       endif
       if (iOki.eq.1) then
          L = OL
          oab = OOAB
+
+         beam = 1
+         binsize_loc = basic_binsize*binsize_factor
+         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
+
          nu_mode = 1         ! nu_e flux
-         binsize_loc = basic_binsize*binsize_factor
-         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,xl,evform,serror,snmax,ihisto,eventout_ne
      &        ,heventout,neventout,ierr) 
-         open(1,file="flux_ne_Oki.dat",status="replace")
+         nu_mode = 2         ! nu_mu flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_nm
+     &        ,heventout,neventout,ierr) 
+         nu_mode = -1         ! anti-nu_e flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_ae
+     &        ,heventout,neventout,ierr) 
+         nu_mode = -2         ! anti-nu_mu flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_am
+     &        ,heventout,neventout,ierr) 
+
+         open(1,file="fluxn_Oki.dat",status="replace")
          do i = 0,nbins_loc-1
-            write(1,*) xl(i),eventout(i+1)
+            write(1,*) xl(i),eventout_nm(i+1),eventout_am(i+1)
+     &           ,eventout_ne(i+1),eventout_ae(i+1)
          enddo
          close(1)
-         nu_mode = 2         ! nu_mode
+
+         beam = -1
          binsize_loc = basic_binsize*binsize_factor
          call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
+
+         nu_mode = 1         ! nu_e flux
          call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,xl,evform,serror,snmax,ihisto,eventout_ne
      &        ,heventout,neventout,ierr) 
-         open(1,file="flux_nmOkiK.dat",status="replace")
+         nu_mode = 2         ! nu_mu flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_nm
+     &        ,heventout,neventout,ierr) 
+         nu_mode = -1         ! anti-nu_e flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_ae
+     &        ,heventout,neventout,ierr) 
+         nu_mode = -2         ! anti-nu_mu flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_am
+     &        ,heventout,neventout,ierr) 
+
+         open(1,file="fluxa_Oki.dat",status="replace")
          do i = 0,nbins_loc-1
-            write(1,*) xl(i),eventout(i+1)
+            write(1,*) xl(i),eventout_nm(i+1),eventout_am(i+1)
+     &           ,eventout_ne(i+1),eventout_ae(i+1)
          enddo
          close(1)
-         nu_mode = -1        ! nu_mode
-         binsize_loc = basic_binsize*binsize_factor
-         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout
-     &        ,heventout,neventout,ierr) 
-         open(1,file="flux_ae_Oki.dat",status="replace")
-         do i = 0,nbins_loc-1
-            write(1,*) xl(i),eventout(i+1)
-         enddo
-         close(1)
-         nu_mode = -2        ! nu_mode
-         binsize_loc = basic_binsize*binsize_factor
-         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout
-     &        ,heventout,neventout,ierr) 
-         open(1,file="flux_am_Oki.dat",status="replace")
-         do i = 0,nbins_loc-1
-            write(1,*) xl(i),eventout(i+1)
-         enddo
-         close(1)
+
       endif
       if (iKr.eq.1) then
          L = KL
          oab = KOAB         
-         nu_mode = 1         ! nu_e flux
-         binsize_loc = basic_binsize*binsize_factor
-         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout
-     &        ,heventout,neventout,ierr) 
-         open(1,file="flux_ne_Kr.dat",status="replace")
-         do i = 0,nbins_loc-1
-            write(1,*) xl(i),eventout(i+1)
-         enddo
-         close(1)
-         nu_mode = 2         ! nu_mode
-         binsize_loc = basic_binsize*binsize_factor
-         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout
-     &        ,heventout,neventout,ierr) 
-         open(1,file="flux_nm_Kr.dat",status="replace")
-         do i = 0,nbins_loc-1
-            write(1,*) xl(i),eventout(i+1)
-         enddo
-         close(1)
-         nu_mode = -1        ! nu_mode
-         binsize_loc = basic_binsize*binsize_factor
-         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout
-     &        ,heventout,neventout,ierr) 
-         open(1,file="flux_ae_Kr.dat",status="replace")
-         do i = 0,nbins_loc-1
-            write(1,*) xl(i),eventout(i+1)
-         enddo
-         close(1)
-         nu_mode = -2        ! nu_mode
-         binsize_loc = basic_binsize*binsize_factor
-         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout
-     &        ,heventout,neventout,ierr) 
-         open(1,file="flux_am_Kr.dat",status="replace")
-         do i = 0,nbins_loc-1
-            write(1,*) xl(i),eventout(i+1)
-         enddo
-         close(1)
-      endif
 
+         beam = 1
+         binsize_loc = basic_binsize*binsize_factor
+         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
+
+         nu_mode = 1         ! nu_e flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_ne
+     &        ,heventout,neventout,ierr) 
+         nu_mode = 2         ! nu_mu flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_nm
+     &        ,heventout,neventout,ierr) 
+         nu_mode = -1         ! anti-nu_e flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_ae
+     &        ,heventout,neventout,ierr) 
+         nu_mode = -2         ! anti-nu_mu flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_am
+     &        ,heventout,neventout,ierr) 
+
+         open(1,file="fluxn_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout_nm(i+1),eventout_am(i+1)
+     &           ,eventout_ne(i+1),eventout_ae(i+1)
+         enddo
+         close(1)
+
+         beam = -1
+         binsize_loc = basic_binsize*binsize_factor
+         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
+
+         nu_mode = 1         ! nu_e flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_ne
+     &        ,heventout,neventout,ierr) 
+         nu_mode = 2         ! nu_mu flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_nm
+     &        ,heventout,neventout,ierr) 
+         nu_mode = -1         ! anti-nu_e flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_ae
+     &        ,heventout,neventout,ierr) 
+         nu_mode = -2         ! anti-nu_mu flux
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout_am
+     &        ,heventout,neventout,ierr) 
+
+         open(1,file="fluxa_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout_nm(i+1),eventout_am(i+1)
+     &           ,eventout_ne(i+1),eventout_ae(i+1)
+         enddo
+         close(1)
+
+      endif
 
 
 c     
