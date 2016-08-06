@@ -41,7 +41,7 @@ CCCCCCCCCCCCCCCC  Event distributions  CCCCCCCCCCCCCCCCCCCCCCCCCCCC
       call mnexcm(minfunc,'SET PRINTOUT',arg,1,ierr,0)     
       idata = 1
       call minfunc(npari,grad,dchisq,z,iflag,0)            
-      write(*,*) "fist iteration"
+      write(*,*) "first iteration"
 CCCCCCCCCCCCCCCC  chi^2 minimization  CCCCCCCCCC
       if (mode.eq.1) then
          write(*,*) "[Delta-Chi2 analysis]"
