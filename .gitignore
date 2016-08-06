@@ -14,3 +14,4 @@ main
 status
 data/*
 xsec_test
+*.a
