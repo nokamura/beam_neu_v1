@@ -53,6 +53,7 @@ C
 C     Flux	 
 C     
       icc = 1 ! dummy
+      detect = 1 ! dummy
       ihfunc = 1               ! ihfunc 
       ihisto = 2
 

@@ -191,7 +191,7 @@ c$$$      endif
       write(*,*) "Max division = 2^",snmax+1
       write(*,*) ""
 
-      if (mode.eq.1) then
+      if (mode.eq.0) then
          if (beam.eq.1) then
             write(*,*) "beam mode: nu_mu focusing beam"      
          elseif (beam.eq.-1) then
@@ -212,7 +212,7 @@ c$$$      endif
          endif
       endif
       write(*,*) "Ev range:",Emin," -",Emax," [GeV]"
-      if (mode.eq.0) then
+      if (mode.eq.1) then
          write(*,*) ""
          write(*,*) "Run in minimization mode"
          write(*,*) ""
