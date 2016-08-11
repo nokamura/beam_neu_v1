@@ -9,7 +9,8 @@ C     GLOBAL VARIABLES
       include 'inc/minfunc.inc'
 C     ARGUMENTS 
       integer npar,iflag
-      real*8 z(zdim),grad,chisq
+      real*8 z(zdim),grad,chisq,param(nparx),param0(nparx)
+      real*8 error2(max_npar)
 C     LOCAL VARIABLES 
       integer i,j,k,l1,l2,l3,ilike
 C     EXTERNAL FUNCTIONS
@@ -73,7 +74,11 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
                enddo
             enddo
          enddo
-         call get_pull(nparx,z,z_dat,pull_fact,error,parflag)
+C     for sin(2*th_23)^2 constraint
+         call get_pullparams(nparx,z,z_dat,error,param,param0,error2)
+         call get_pull(nparx,param,param0,pull_fact,error2,parflag)
+C     for sin(th_23)^2 constraint
+c         call get_pull(nparx,z,z_dat,pull_fact,error,parflag)
          chisq_param_tot = 0d0
          do i = 1,nparx
             chisq_param_tot = chisq_param_tot +pull_fact(i)**2

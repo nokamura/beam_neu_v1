@@ -270,9 +270,41 @@ C     BEGIN CODE
 C     ----------
       do i = 1,nparam
          if (flag(i).eq.1) then
-         pull(i) = ( param(i) -param0(i) )/error(i)
+            pull(i) = ( param(i) -param0(i) )/error(i)
          else
             pull(i) = 0d0
+         endif
+      enddo
+
+      return
+      end
+
+
+      subroutine get_pullparams(nparam,z,z_dat,error,param,param0,error2)
+C     ****************************************************
+C     By Yoshitaro Takaesu @U.Okayama Aug 12 2016
+C     prepare parameters for pull factor calculation
+C     ****************************************************
+      implicit none
+      include 'inc/params.inc'
+C     ARGUMENTS 
+      integer nparam
+      real*8 param(nparam),param0(nparam),z(zdim),z_dat(zdim)
+      real*8 error(nparam),error2(nparam)
+C     LOCAL VARIABLES 
+      integer i
+C     ----------
+C     BEGIN CODE
+C     ----------
+      do i = 1,nparam
+         if (i.eq.2) then ! for sin(2*th_23)^2
+            param0(i) = 1d0
+            error2(i) = 0.017 
+            param(i) = 4*z(i) -4*z(i)**2
+         else
+            param0(i) = z_dat(i)
+            error2(i) = error(i)
+            param(i) = z(i)
          endif
       enddo
 
