@@ -152,8 +152,10 @@ C     ----------
       error(55) = fpico(2)
       error(56) = frpi0(2)
 
-      do i = 1,nparx
+c      do i = 1,nparx
+      do i = 1,max_npar
          parflag(i) = 1
+c         parflag(i) = 0
       enddo
 c     Specify which parameters are NOT included in the chi^2 function
       if (fs2sol_2(4).eq.0) then

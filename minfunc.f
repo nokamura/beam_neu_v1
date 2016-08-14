@@ -65,26 +65,33 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
             iD = 3
             call apply_Ereccut(iD,hErec_like_th,hErec_chi2_th)
          endif
+
          call get_chisq_stat
          chisq = 0d0
          do k = -1,1,2
             do i = 1,ndetect
                do j = 1,nmode_like
+c               do j = 2,2
                   chisq = chisq +chisq_stat(j,i,k)
                enddo
             enddo
          enddo
-C     for sin(2*th_23)^2 constraint
+
+CCC   for sin(2*th_23)^2 constraint
          call get_pullparams(nparx,z,z_dat,error,param,param0,error2)
          call get_pull(nparx,param,param0,pull_fact,error2,parflag)
-C     for sin(th_23)^2 constraint
+CCC   for sin(th_23)^2 constraint
 c         call get_pull(nparx,z,z_dat,pull_fact,error,parflag)
+
          chisq_param_tot = 0d0
          do i = 1,nparx
             chisq_param_tot = chisq_param_tot +pull_fact(i)**2
          enddo
+
 c         chisq_param_tot = chi2_para(nparx,z,z_dat,error,parflag)
          chisq = chisq +chisq_param_tot
+c         chisq = chisq
+
       endif
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       return

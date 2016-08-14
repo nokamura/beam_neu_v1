@@ -118,6 +118,7 @@ C     ----------
       call mnparm(54,'fpirs',fpirs(1),fpirs(2),0d0,0d0,ierr)
       call mnparm(55,'fpico',fpico(1),fpico(2),0d0,0d0,ierr)
       call mnparm(56,'frpi0',frpi0(1),frpi0(2),0d0,0d0,ierr)
+c     call mncomd(minfunc,'FIX 2',iflag,0)
       if (fs2sol_2(3).eq.0) then
          call mncomd(minfunc,'FIX 1',iflag,0)
       endif
@@ -232,6 +233,28 @@ c     For re-evaluation paper
       call mncomd(minfunc,'FIX 21',iflag,0)  ! SPe2m
       call mncomd(minfunc,'FIX 35',iflag,0)  ! OPe2m
       call mncomd(minfunc,'FIX 49',iflag,0)  ! KPe2m
+c
+c$$$      call mncomd(minfunc,'FIX 39',iflag,0) ! Kfnmn
+c$$$      call mncomd(minfunc,'FIX 40',iflag,0) ! Kfnen
+c$$$      call mncomd(minfunc,'FIX 41',iflag,0) ! Kfnma
+c$$$      call mncomd(minfunc,'FIX 42',iflag,0) ! Kfnea
+c$$$      call mncomd(minfunc,'FIX 43',iflag,0) ! Kfamn
+c$$$      call mncomd(minfunc,'FIX 44',iflag,0) ! Kfaen
+c$$$      call mncomd(minfunc,'FIX 45',iflag,0) ! Kfama
+c$$$      call mncomd(minfunc,'FIX 46',iflag,0) ! Kfaea
+c
+c      call mncomd(minfunc,'FIX 33',iflag,0)  ! Oeffe
+c      call mncomd(minfunc,'FIX 34',iflag,0)  ! Oeffm
+c      call mncomd(minfunc,'FIX 35',iflag,0)  ! OPm2e
+c      call mncomd(minfunc,'FIX 36',iflag,0)  ! OPe2m
+c      call mncomd(minfunc,'FIX 47',iflag,0)  ! Keffe
+c      call mncomd(minfunc,'FIX 48',iflag,0)  ! Keffm
+c      call mncomd(minfunc,'FIX 49',iflag,0)  ! KPm2e
+c      call mncomd(minfunc,'FIX 50',iflag,0)  ! KPe2m
+c
+c      call mncomd(minfunc,'FIX 20',iflag,0)  ! Seffm
+c
+c      call mncomd(minfunc,'FIX 19',iflag,0)  ! Seffe
 
       call mnstat(chisqmin,fedm,errdef,npari,nparx,istat)      
 
