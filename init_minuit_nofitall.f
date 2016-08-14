@@ -136,7 +136,9 @@ C     ----------
       if (fdCP(3).eq.0) then
          call mncomd(minfunc,'FIX 6',iflag,0)
       endif
-      if (iSK.eq.0) then
+         call mncomd(minfunc,'FIX 7',iflag,0)
+         call mncomd(minfunc,'FIX 8',iflag,0)
+c      if (iSK.eq.0) then
          call mncomd(minfunc,'FIX 9',iflag,0)
          call mncomd(minfunc,'FIX 10',iflag,0)
          call mncomd(minfunc,'FIX 11',iflag,0)
@@ -151,8 +153,8 @@ C     ----------
          call mncomd(minfunc,'FIX 20',iflag,0)
          call mncomd(minfunc,'FIX 21',iflag,0)
          call mncomd(minfunc,'FIX 22',iflag,0)
-      endif
-      if (iOki.eq.0) then
+c      endif
+c      if (iOki.eq.0) then
          call mncomd(minfunc,'FIX 23',iflag,0)
          call mncomd(minfunc,'FIX 24',iflag,0)
          call mncomd(minfunc,'FIX 25',iflag,0)
@@ -167,9 +169,9 @@ C     ----------
          call mncomd(minfunc,'FIX 34',iflag,0)
          call mncomd(minfunc,'FIX 35',iflag,0)
          call mncomd(minfunc,'FIX 36',iflag,0)
-      endif
-      if (iKr.eq.0) then
-         call mncomd(minfunc,'FIX 37',iflag,0)
+c      endif
+c      if (iKr.eq.0) then
+c         call mncomd(minfunc,'FIX 37',iflag,0)
          call mncomd(minfunc,'FIX 38',iflag,0)
          call mncomd(minfunc,'FIX 39',iflag,0)
          call mncomd(minfunc,'FIX 40',iflag,0)
@@ -183,46 +185,49 @@ C     ----------
          call mncomd(minfunc,'FIX 48',iflag,0)
          call mncomd(minfunc,'FIX 49',iflag,0)
          call mncomd(minfunc,'FIX 50',iflag,0)
-      endif
-      if (ieff.eq.0) then
+c      endif
+c      if (ieff.eq.0) then
          call mncomd(minfunc,'FIX 19',iflag,0)
          call mncomd(minfunc,'FIX 20',iflag,0)
          call mncomd(minfunc,'FIX 33',iflag,0)
          call mncomd(minfunc,'FIX 34',iflag,0)
          call mncomd(minfunc,'FIX 47',iflag,0)
          call mncomd(minfunc,'FIX 48',iflag,0)
-      endif
-      if (imissid.eq.0) then
+c      endif
+c      if (imissid.eq.0) then
          call mncomd(minfunc,'FIX 21',iflag,0)
          call mncomd(minfunc,'FIX 22',iflag,0)
          call mncomd(minfunc,'FIX 35',iflag,0)
          call mncomd(minfunc,'FIX 36',iflag,0)
          call mncomd(minfunc,'FIX 49',iflag,0)
          call mncomd(minfunc,'FIX 50',iflag,0)
-      endif
-      if (ipi0unc.eq.0) then
+         call mncomd(minfunc,'FIX 51',iflag,0)
+         call mncomd(minfunc,'FIX 52',iflag,0)
+c      endif
+c      if (ipi0unc.eq.0) then
          call mncomd(minfunc,'FIX 56',iflag,0)
-      elseif (ipi0unc.eq.1) then
+c      elseif (ipi0unc.eq.1) then
          call mncomd(minfunc,'FIX 54',iflag,0)
          call mncomd(minfunc,'FIX 55',iflag,0)
-      elseif (ipi0unc.eq.2) then
+c      elseif (ipi0unc.eq.2) then
          call mncomd(minfunc,'FIX 54',iflag,0)
          call mncomd(minfunc,'FIX 55',iflag,0)
          call mncomd(minfunc,'FIX 56',iflag,0)
-      endif
-      if (fpi0(2).eq.0) then
+c      endif
+c      if (fpi0(2).eq.0) then
          call mncomd(minfunc,'FIX 53',iflag,0)
          fpi0(2) = 1
-      endif
-      if (fpirs(2).eq.0) then
+c      endif
+c      if (fpirs(2).eq.0) then
          call mncomd(minfunc,'FIX 54',iflag,0)
          fpirs(2) = 1
-      endif
-      if (fpico(2).eq.0) then
+c      endif
+c      if (fpico(2).eq.0) then
          call mncomd(minfunc,'FIX 55',iflag,0)
          fpico(2) = 1
-      endif
+c      endif
 
+c      call mncomd(minfunc,'FIX 55',iflag,0)
 c     For re-evaluation paper
       call mncomd(minfunc,'FIX 21',iflag,0)  ! SPe2m
       call mncomd(minfunc,'FIX 35',iflag,0)  ! OPe2m
