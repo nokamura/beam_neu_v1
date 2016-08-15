@@ -58,6 +58,7 @@ C     GLOBAL VARIABLES
       include 'beam/oab00n.inc'
       include 'beam/oab05n.inc'
       include 'beam/oab06n.inc'
+      include 'beam/oab08n.inc'
       include 'beam/oab09n.inc'
       include 'beam/oab10n.inc'
       include 'beam/oab11n.inc'
@@ -71,6 +72,7 @@ C     GLOBAL VARIABLES
       include 'beam/oab00a.inc'
       include 'beam/oab05a.inc'
       include 'beam/oab06a.inc'
+      include 'beam/oab08a.inc'
       include 'beam/oab09a.inc'
       include 'beam/oab10a.inc'
       include 'beam/oab11a.inc'
@@ -129,6 +131,8 @@ c      elseif (v1.eq.1) then
             flux = read_histo(oab05n,300,5,binw,icol,E)
          elseif (oab.eq.0.6d0) then
             flux = read_histo(oab06n,300,5,binw,icol,E)
+         elseif (oab.eq.0.8d0) then
+            flux = read_histo(oab08n,300,5,binw,icol,E)
          elseif (oab.eq.0.9d0) then
             flux = read_histo(oab09n,300,5,binw,icol,E)
          elseif (oab.eq.1.0d0) then
@@ -162,6 +166,8 @@ c      elseif (v1.eq.1) then
             flux = read_histo(oab05a,300,5,binw,icol,E)
          elseif (oab.eq.0.6d0) then
             flux = read_histo(oab06a,300,5,binw,icol,E)
+         elseif (oab.eq.0.8d0) then
+            flux = read_histo(oab08a,300,5,binw,icol,E)
          elseif (oab.eq.0.9d0) then
             flux = read_histo(oab09a,300,5,binw,icol,E)
          elseif (oab.eq.1.0d0) then
