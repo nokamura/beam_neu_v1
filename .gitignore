@@ -15,3 +15,6 @@ status
 data/*
 xsec_test
 *.a
+maindir.txt
+beam_neu_dir.txt
+job_system_dir.txt
