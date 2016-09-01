@@ -67,6 +67,7 @@ C     GLOBAL VARIABLES
       include 'beam/oab14n.inc'
       include 'beam/oab15n.inc'
       include 'beam/oab20n.inc'
+      include 'beam/oab23n.inc'
       include 'beam/oab25n.inc'
       include 'beam/oab30n.inc'
       include 'beam/oab00a.inc'
@@ -81,6 +82,7 @@ C     GLOBAL VARIABLES
       include 'beam/oab14a.inc'
       include 'beam/oab15a.inc'
       include 'beam/oab20a.inc'
+      include 'beam/oab23a.inc'
       include 'beam/oab25a.inc'
       include 'beam/oab30a.inc'
 C     ARGUMENTS 
@@ -149,6 +151,8 @@ c      elseif (v1.eq.1) then
             flux = read_histo(oab15n,300,5,binw,icol,E)
          elseif (oab.eq.2.0d0) then
             flux = read_histo(oab20n,300,5,binw,icol,E)
+         elseif (oab.eq.2.3d0) then
+            flux = read_histo(oab23n,300,5,binw,icol,E)
          elseif (oab.eq.2.5d0) then
             flux = read_histo(oab25n,300,5,binw,icol,E)
          elseif (oab.eq.3.0d0) then
@@ -184,6 +188,8 @@ c      elseif (v1.eq.1) then
             flux = read_histo(oab15a,300,5,binw,icol,E)
          elseif (oab.eq.2.0d0) then
             flux = read_histo(oab20a,300,5,binw,icol,E)
+         elseif (oab.eq.2.3d0) then
+            flux = read_histo(oab23a,300,5,binw,icol,E)
          elseif (oab.eq.2.5d0) then
             flux = read_histo(oab25a,300,5,binw,icol,E)
          elseif (oab.eq.3.0d0) then
