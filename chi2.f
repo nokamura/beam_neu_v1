@@ -300,7 +300,7 @@ C     ----------
       do i = 1,nparam
          if (i.eq.2) then ! for sin(2*th_23)^2
             param0(i) = 1d0
-            error2(i) = 0.017 
+            error2(i) = 0.02
             param(i) = 4*z(i) -4*z(i)**2
          else
             param0(i) = z_dat(i)
