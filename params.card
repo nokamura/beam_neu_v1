@@ -78,15 +78,15 @@ C detect: the neutrino type to be detected at a far detector
 C Y: Total experimental exposure in years
 C r_nu, r_anu: running ratio of nu_mu and anti-nu_mu focusing beam
 C              Y(nu_mu) : Y(anu_mu) = r_nu : r_anu  
-C Emin (Emax): The minimum (maximum) energy for an analysis [GeV]
+C Emin (Emax): The minimum (maximum) reconstructed energy to be saved [GeV]
 C binsize: binsize in the unit of a binning parameter 
 C*************************************************
   beam    1         ! Not used anymore
   Y       2.7d0  
   r_nu    1
   r_anu   1
-  Emin    0d0       ! Do not change
-  Emax    5.9d0     ! Do not change    ! Emax shoud be < 6.0
+  Emin    0.4d0     ! Do not change
+  Emax    5.0d0     ! Do not change    ! Emax shoud be < 6.0
   binsize_factor 1  ! Do not change
 C*************************************************
 C Neutrino oscillation parameters
@@ -97,7 +97,7 @@ C*************************************************
   ithatm   2  ! 1:thatm = s2atm2  2:thatm = satm2
   ioct     -1 ! Only valid for ithatm = 1
   idmatm2  2  ! 1:dm2atm = dm^2_31 2:dm2atm = dm^2_32 	
-  MH  1
+  MH  -1
   s2sol_2  0.85
   thatm    0.5         ! PDG (2013) 
   s2rct_2  0.085
