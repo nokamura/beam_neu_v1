@@ -307,8 +307,8 @@ c      xsec = xsec_CC(detect,E)/(33.6d30*8) ! nu_e-H2O xsec/neutron
 c      xsec = xsec_CC(detect,E)/(33.6d30*10) ! bar{nu}_e-H2O xsec/proton
 c      xsec = xsec_CC(detect,E)/(3.34d31*8)*4.89d33/18d0 ! nu_e-H2O xsec/neutron scaled to 1kton LS
 c      xsec = xsec_CC(detect,E)/(3.34d31*10)*6.24d33/18d0 ! bar{nu}_e-H2O xsec/proton scaled to 1kton LS
-      hrho = frho*rho
       if (ihfunc.eq.0) then
+         hrho = frho*rho
          if (icc.eq.1) then
             hfunc1D = ff*flux*xsec*fD*V*YY
      &           *prob(nu_mode,detect,E,L,s212_2,s223_2,s213_2,hdm21_2
@@ -325,13 +325,13 @@ c     &           ,hdm31_2,hdCP,hrho,oct_23)
          hfunc1D = flux
       elseif (ihfunc.eq.2) then
          hfunc1D = prob(nu_mode,detect,E,L,s212_2,s223_2,s213_2,hdm21_2
-     &        ,hdm31_2,hdCP,hrho,oct_23)
+     &        ,hdm31_2,hdCP,rho,oct_23)
       elseif (ihfunc.eq.3) then
          hfunc1D = xsec
       elseif (ihfunc.eq.4) then
          hfunc1D = flux*xsec*V*YY
      &        *prob(nu_mode,detect,E,L,s212_2,s223_2,s213_2,hdm21_2
-     &        ,hdm31_2,hdCP,hrho,oct_23)
+     &        ,hdm31_2,hdCP,rho,oct_23)
       endif
 
       return
