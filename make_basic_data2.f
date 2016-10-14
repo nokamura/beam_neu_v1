@@ -44,7 +44,7 @@ C     ----------
       oab_tmp = oab      
 
       xmin = 0d0
-      xmax = 5d0
+      xmax = 5.9d0
       basic_binsize = 0.01
       binsize_factor = 5
       evform = evform_dat
@@ -241,6 +241,260 @@ C
 
       endif
 
+c     
+c     Transition Probability
+c     
+      ihfunc = 2
+      ihisto = 0
+      ismear = 0
+c      binsize_loc = basic_binsize*binsize_factor
+c      binsize_loc = 0.005
+      nbins_loc = 1000
+c      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
+      call bining_log10x(0.1d0,xmax,nbins_loc,xl,yyl)
+
+      if (iSK.eq.1) then
+         L = SL
+         rho = Srho
+
+         nu_mode = 1
+         detect = 1
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_ne.ne_SK.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = 2
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_ne.nm_SK.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = 3
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_ne.nt_SK.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         
+         nu_mode = 2
+         detect = 1
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_nm.ne_SK.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = 2
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_nm.nm_SK.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = 3
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_nm.nt_SK.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         
+         nu_mode = -1
+         detect = -1
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_ae.ae_SK.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = -2
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_ae.am_SK.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = -3
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_ae.at_SK.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         
+         nu_mode = -2
+         detect = -1
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_am.ae_SK.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = -2
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_am.am_SK.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = -3
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_am.at_SK.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+      endif
+
+      if (iKr.eq.1) then
+         L = KL
+         rho = Krho
+
+         nu_mode = 1
+         detect = 1
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_ne.ne_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = 2
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_ne.nm_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = 3
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_ne.nt_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         
+         nu_mode = 2
+         detect = 1
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_nm.ne_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = 2
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_nm.nm_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = 3
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_nm.nt_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         
+         nu_mode = -1
+         detect = -1
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_ae.ae_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = -2
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_ae.am_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = -3
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_ae.at_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         
+         nu_mode = -2
+         detect = -1
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_am.ae_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = -2
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_am.am_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+         detect = -3
+         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &        ,xl,evform,serror,snmax,ihisto,eventout
+     &        ,heventout,neventout,ierr) 
+         open(1,file="prob_am.at_Kr.dat",status="replace")
+         do i = 0,nbins_loc-1
+            write(1,*) xl(i),eventout(i+1)
+         enddo
+         close(1)
+      endif
+         
 
 c     
 c     Xsec
