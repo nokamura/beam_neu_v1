@@ -15,10 +15,10 @@ C ihfunc = 0:normal mode(under construction)
 C          1:flux 2:Osc.Prob. 3:Xsec 4:flux*Osc.prob.*Xsec
 C          5:semarring function for CCQE 11:normal mode(NCtotal) 100:Free
 C*************************************************
-  mode  1
+  mode  0
   iSK   1
    Srho  2.60d0
-   SV    22.5d0 ! fiducial volume
+   SV    209.5d0 ! fiducial volume
    SL    295d0
    SOAB   2.5
    Semin    0.4d0
@@ -38,9 +38,9 @@ C*************************************************
    Obfactor 1  ! should be 4 for mode = 1    
   iKr   1
    Krho  2.9d0
-   KV     100d0
-   KL     1000
-   KOAB   1.3
+   KV     187d0
+   KL     1040
+   KOAB   2.3
    Kemin    0.4d0
    Kemax    5.0d0 
    Kmmin    0.4d0 
@@ -53,9 +53,9 @@ C*************************************************
   serror  1d-2
   snmax   10 
   ihisto   2   ! Do not use 1. The integration may not converge.
-  ismear   0   ! 0:no smearing 1:smearing
-  iCCQE    0   ! CCQE switch
-  iCCRes   0   ! CCRes switch. Meaningfull when ismear=1.
+  ismear   1   ! 0:no smearing 1:smearing
+  iCCQE    1   ! CCQE switch
+  iCCRes   1   ! CCRes switch. Meaningfull when ismear=1.
   iNC      0   ! NC switch. Meaningfull when ismear=1.
   ipi0dist 0   ! Set to 0 unless you want to study NC pi^0 itself.
   ipi0xsec 1  ! 0:NC1pi0 1:NC1pi0BG (polfit) 2:NC1pi0BG (old missID)
@@ -82,7 +82,7 @@ C Emin (Emax): The minimum (maximum) energy for an analysis [GeV]
 C binsize: binsize in the unit of a binning parameter 
 C*************************************************
   beam    1         ! Not used anymore
-  Y       5d0  
+  Y       2.7d0  
   r_nu    1
   r_anu   1
   Emin    0d0       ! Do not change
@@ -98,36 +98,36 @@ C*************************************************
   ioct     -1 ! Only valid for ithatm = 1
   idmatm2  2  ! 1:dm2atm = dm^2_31 2:dm2atm = dm^2_32 	
   MH  1
-  s2sol_2  0.875
-  thatm    0.6          ! PDG (2013) 
-  s2rct_2  0.095
-  dm21_2   7.50d-5
-  dmatm_2  2.32d-3
+  s2sol_2  0.85
+  thatm    0.5         ! PDG (2013) 
+  s2rct_2  0.085
+  dm21_2   7.5d-5
+  dmatm_2  2.47d-3
   dCP      0
 C*************************************************
 C Fitting parameters
 C*************************************************
-  fs2sol_2      0.875
-  err_s2sol_2   0.024
+  fs2sol_2      0.85
+  err_s2sol_2   0.02
   ifit_s2sol_2  1       ! 0: fixed param  1: fitting param
   ichi2_s2sol_2 1       ! 0: NOT included in chi^2 1: Included in chi^2
 
-  fthatm        0.4
-  err_thatm     0.1
+  fthatm        0.5
+  err_thatm     0.05
   ifit_thatm    1
   ichi2_thatm   1       
 
-  fs2rct_2      0.095
+  fs2rct_2      0.085
   err_s2rct_2   0.005
   ifit_s2rct_2  1
   ichi2_s2rct_2 1       
 
-  fdm21_2       7.50d-5 
-  err_dm21_2    0.20d-5
+  fdm21_2       7.5d-5 
+  err_dm21_2    0.2d-5
   ifit_dm21_2   1
   ichi2_dm21_2  1       
 
-  fdmatm_2      2.32d-3
+  fdmatm_2      2.47d-3
   err_dmatm_2   0.1d-3 
   ifit_dmatm_2  1
   ichi2_dmatm_2 1       
@@ -180,7 +180,7 @@ CCCCC  SK  CCCCCCCCC
   fSaea      1.00
   err_fSaea  0.03
   Seffe      0.90   ! Efficiency of detecting the Cerenkov ring emitted by an electron
-  err_Seffe  0.05
+  err_Seffe  0.03
   Seffmu     1.00   ! Efficiency of detecting the Cerenkov ring emitted by a muon
   err_Seffmu 0.01
   SPe2m      0.01   ! Probability of miss-ID a detected electron Cerenkov ring as a muon ring 
@@ -209,7 +209,7 @@ CCCCC  Oki  CCCCCCCCC
   fOaea      1.00
   err_fOaea  0.03
   Oeffe      0.90    ! Efficiency of detecting the Cerenkov ring emitted by an electron
-  err_Oeffe  0.05
+  err_Oeffe  0.03
   Oeffmu     1.00    ! Efficiency of detecting the Cerenkov ring emitted by a muon
   err_Oeffmu 0.01
   OPe2m      0.01   ! Probability of miss-ID a detected electron Cerenkov ring as a muon ring 
@@ -238,7 +238,7 @@ CCCCC  Korea  CCCCCCCCC
   fKaea     1.00
   err_fKaea 0.03
   Keffe     0.90   ! Efficiency of detecting the Cerenkov ring emitted by an electron
-  err_Keffe 0.05
+  err_Keffe 0.03
   Keffmu    1.00   ! Efficiency of detecting the Cerenkov ring emitted by a muon
   err_Keffmu 0.01
   KPe2m     0.01   ! Probability of miss-ID a detected electron Cerenkov ring as a muon ring 
