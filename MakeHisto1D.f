@@ -31,7 +31,8 @@ C     ----------
 
       if (mode.eq.0) then
          do i = 1,nbins
-            cx = ( x(i) +x(i-1) )/2d0
+c            cx = ( x(i) +x(i-1) )/2d0
+            cx = x(i-1)
             event(i) = f(cx,z)
             hevent(i) = 0d0
             nevent_th = 0d0
