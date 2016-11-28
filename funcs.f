@@ -610,7 +610,8 @@ c      s12_2 = ( 1d0 -dsqrt(1d0 -s2sun_2_eff/c13**4) )/2d0
       ue2 = s12*c13
       ue3 = s13
 
-      dim_fact = 1d6/197.3269631d0
+c      dim_fact = 1d6/197.3269631d0
+      dim_fact = 1d6/197.33
       aa = a*dim_fact
 
       if (mode.eq.0) then
@@ -1172,10 +1173,12 @@ C     ****************************************************
 C     CONSTANTS
 C     ARGUMENTS
       integer ii,jj,n
-      real*8 lam(n),E,L
+      real*8 lam(n),E,L,hbarc_approx
 C     LOCAL VARIABLES
-      
-      Delt = (lam(jj) -lam(ii))/(2*E)*L*1d0/hbarc
+
+      hbarc_approx = 0.19733d0
+c      Delt = (lam(jj) -lam(ii))/(2*E)*L*1d0/hbarc
+      Delt = (lam(jj) -lam(ii))/(2*E)*L*1d0/hbarc_approx
 
       return
       end
