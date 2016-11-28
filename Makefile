@@ -1,5 +1,5 @@
-#F77      = g77
-F77      = gfortran
+F77      = g77
+#F77      = gfortran
 FFLAGS   = -O -ffixed-line-length-200 -ffixed-form
 LIBDIR   = -L./lib
 LIBS_MYLIB = -lmylib -lminuit
@@ -28,7 +28,7 @@ OBJS_smeardist_mono  = smeardist_mono.o get_nudist_mode.o MakeHisto1D.o \
 
 OBJS_flux       = interpolate_flux.o make_flux.o
 
-OBJS_test       = test.o apply_Ereccut.o bining.o
+OBJS_test       = test.o apply_Ereccut.o bining.o funcs_probtest.o CEigensystem.o
 
 .f.o:
 	$(F77) $(FFLAGS) $(INCLUDES) -c $<
