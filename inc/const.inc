@@ -6,7 +6,8 @@
 	real*8 avog,bolt,hbarc 
 	parameter (avog=6.02214179d23) ! Avogadro number
 	parameter (bolt=1.3806504d-23) ! Boltzmann constant
-	parameter (hbarc=0.1973269631) ! hbarc in GeV*fm
+c	parameter (hbarc=0.1973269631) ! hbarc in GeV*fm
+	parameter (hbarc=0.19733) ! hbarc in GeV*fm
 
 	real*8 y2s,j2ev 
 	parameter (y2s=60*60*24*365d0) ! year to second

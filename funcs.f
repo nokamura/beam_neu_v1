@@ -1176,9 +1176,9 @@ C     ARGUMENTS
       real*8 lam(n),E,L,hbarc_approx
 C     LOCAL VARIABLES
 
-      hbarc_approx = 0.19733d0
-c      Delt = (lam(jj) -lam(ii))/(2*E)*L*1d0/hbarc
-      Delt = (lam(jj) -lam(ii))/(2*E)*L*1d0/hbarc_approx
+c      hbarc_approx = 0.19733d0
+      Delt = (lam(jj) -lam(ii))/(2*E)*L*1d0/hbarc
+c      Delt = (lam(jj) -lam(ii))/(2*E)*L*1d0/hbarc_approx
 
       return
       end
