@@ -249,7 +249,7 @@ c
       ismear = 0
 c      binsize_loc = basic_binsize*binsize_factor
 c      binsize_loc = 0.005
-      nbins_loc = 1000
+      nbins_loc = 1001
 c      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
       call bining_log10x(0.1d0,xmax,nbins_loc,xl,yyl)
 
