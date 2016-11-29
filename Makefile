@@ -1,5 +1,5 @@
-F77      = g77
-#F77      = gfortran
+#F77      = g77
+F77      = gfortran
 FFLAGS   = -O -ffixed-line-length-200 -ffixed-form
 LIBDIR   = -L./lib
 LIBS_MYLIB = -lmylib -lminuit
