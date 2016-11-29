@@ -46,6 +46,16 @@
    ./minimize_dchi2.sh [run_name] [mail]
 
 
+# HOW TO prepare oscillation probability data for checking
+1. modify get_osc-prob_data.sh appropreately, especially "dir" and "Krho" variable
+
+2. ./get_osc-prob_data.sh
+
+
+# HOW TO perform program test
+./test.sh
+
+
 # Cautions
   13.MAY.31: accuracy of fiitting parameter should be less than that
   	     of corresponding true parameter. Otherwise minimization
