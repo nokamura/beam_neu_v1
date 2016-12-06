@@ -12,7 +12,7 @@ C     ARGUMENTS
 C     LOCAL VARIABLES
       integer i
       integer binsize_factor_tmp,ihfunc_tmp,ihisto_tmp
-      integer MH_tmp,nu_mode_tmp,detect_nu_tmp,ierr
+      integer MH_tmp,nu_mode_tmp,detect_nu_tmp,ierr,ismear_tmp
       real*8 Emin_tmp,Emax_tmp,basic_binsize_tmp,L_tmp,V_tmp,icc_tmp
       real*8 eventout(maxnbin),heventout(maxnbin),neventout,Y_tmp
       real*8 event_tmp(maxnbin),hevent_tmp(maxnbin),nevent_tmp
@@ -42,6 +42,7 @@ C     ----------
       ihisto_tmp = ihisto
       rho_tmp = rho
       oab_tmp = oab      
+      ismear_tmp = ismear
 
       xmin = 0d0
       xmax = 5.9d0
@@ -669,6 +670,7 @@ c$$$      close(1)
       oab = oab_tmp
       rho = rho_tmp
       iD = iD_tmp
+      ismear = ismear_tmp
       
       return
       end
