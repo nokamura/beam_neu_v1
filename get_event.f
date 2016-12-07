@@ -1,4 +1,3 @@
-c      subroutine get_event(z,iproc,eventout,neventout)
       subroutine get_event(z,iproc,eventout)
 C     **********************************************************
 C     By Yoshitaro Takaesu @KIAS JAN 7 2014
@@ -44,44 +43,36 @@ CCC   Initialize the "event_tmp2" array
       enddo
 
 CCC   Calculate smeared event distributions
-c      if (ismear.eq.0) then
-c         do i = 1,nbins_basic
-c            event_tmp2(i,1) = event_tmp1(i)
-c         enddo
-c         nevent_tmp2 = nevent_tmp1
-c      elseif (ismear.eq.1) then
-
-CCC      CC interactions
-         if (icc.eq.1) then  
-            if (iproc.eq.abs(detect)) then
-               if (detect.gt.0) then
-                  fxsec_CCQE = z(7)
-                  fxsec_CCRes = z(51)
-               elseif (detect.lt.0) then
-                  fxsec_CCQE = z(8)
-                  fxsec_CCRes = z(52)
-               endif
-               call get_nudist(detect,event_tmp1,event_tmp2
-     &              ,nevent_tmp2)
+CCC   CC interactions
+      if (icc.eq.1) then  
+         if (iproc.eq.abs(detect)) then
+            if (detect.gt.0) then
+               fxsec_CCQE = z(7)
+               fxsec_CCRes = z(51)
+            elseif (detect.lt.0) then
+               fxsec_CCQE = z(8)
+               fxsec_CCRes = z(52)
             endif
-
-CCC      NC intractions
-         elseif (icc.eq.2) then 
-            if (iproc.eq.3) then
-               if (ipi0unc.eq.0) then
-                  fxsec_pirs = z(54)
-                  fxsec_pico = z(55)
-                  fxsec_r = 0d0 ! dymmy parameter in this case. not be used
-               elseif (ipi0unc.eq.1) then
-                  fxsec_r = z(56)
-               endif
-               call get_1pi0dist(evform,fxsec_r,event_tmp1
-     &              ,nevent_tmp1,x_basic,nbins_basic,event_tmp2)
+            call get_nudist(detect,event_tmp1,event_tmp2
+     &           ,nevent_tmp2)
+         endif
+         
+CCC   NC intractions
+      elseif (icc.eq.2) then 
+         if (iproc.eq.3) then
+            if (ipi0unc.eq.0) then
+               fxsec_pirs = z(54)
+               fxsec_pico = z(55)
+               fxsec_r = 0d0    ! dymmy parameter in this case. not be used
+            elseif (ipi0unc.eq.1) then
+               fxsec_r = z(56)
             endif
-         endif      
-c      endif
-
-CCC   Make output "eventout" array by combining adjuscent bins to ensure >= 10 events in all the bins.
+            call get_1pi0dist(evform,fxsec_r,event_tmp1
+     &           ,nevent_tmp1,x_basic,nbins_basic,event_tmp2)
+         endif
+      endif      
+      
+CCC   Make output "eventout" array by combining adjuscent "binsize_factor" bins.
       do j = 1,imaxint
          ite = 0
          ibins = 1
