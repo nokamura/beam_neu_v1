@@ -24,9 +24,9 @@ C     ----------
          MHH = ihypo*MH
       endif
       rnevent_ren = -1  ! -1:No Normalize events other:Normalize events
-      evform_dat = 2
+      evform_dat = 2    ! 1:integer event number 2:real event number
       evform_th = 2      
-      evform = evform_dat
+      evform = evform_dat 
 
       binsize = basic_binsize*binsize_factor
       call bining_x(Emin,Emax,binsize,nbins,x,yy)
