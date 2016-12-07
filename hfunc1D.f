@@ -17,7 +17,7 @@
       external flux_beam,xsec_NC,xsec_CC,xsec_CCQE,prob
       external prob_approx1,prob_approx2,prob_approx3,smear_CCQE_mu      
 
-c     oscillation parameter check
+CCC   Oscillation parameter check
       if (z(1).gt.1) then ! sin(2*th_12)^2
          hfunc1D = 0d0
          return
@@ -107,6 +107,7 @@ c     oscillation parameter check
       endif
 
       hdCP = z(6)/360d0*2*pi ! convert degree to radian
+
       if (z(7).ge.0) then
          hfCCQEn = z(7) ! CCQE-xsec normalization factor for neutrino 
       elseif (z(7).lt.0) then
@@ -255,30 +256,34 @@ c$$$         Pm2e = abs(z(22)) ! for re-evaluation paper
 
       E = x
       if (icc.eq.1) then
+
 CCC     Fluxes
          flux = flux_beam(beam,oab,nu_mode,E,L)
+
 CCC     Cross sections
-         if (ismear.eq.0) then
-            frac = 0d0
-            if (iCCQE.eq.1) then
-               call get_xsecfrac3(E,icc,1,1,detect,frac1) ! CCQE-H
-               call get_xsecfrac3(E,icc,1,2,detect,frac2) ! CCQE-O
-               frac = frac +fxsec_CCQE*(frac1 +frac2)
-            endif
-            if (iCCRes.eq.1) then
-               call get_xsecfrac3(E,icc,1,3,detect,frac3) ! CCRes-H
-               call get_xsecfrac3(E,icc,1,4,detect,frac4) ! CCRes-O
-               frac = frac +fxsec_CCRes*(frac3 +frac4)
-            endif
-c            xsec = xsec_CC(detect,E)*frac  ! for re-evaluation paper
-c            xsec = fxsec_CCQE*xsec_CCQE(detect,E)
-c            xsec = xsec_CCQE(detect,E)
-            xsec = xsec_CCQE(detect,E)*frac
-         elseif (ismear.eq.1) then
+c         if (ismear.eq.0) then
+c            frac = 0d0
+c            if (iCCQE.eq.1) then
+c               call get_xsecfrac3(E,icc,1,1,detect,frac1) ! CCQE-H
+c               call get_xsecfrac3(E,icc,1,2,detect,frac2) ! CCQE-O
+c               frac = frac +fxsec_CCQE*(frac1 +frac2)
+c            endif
+c            if (iCCRes.eq.1) then
+c               call get_xsecfrac3(E,icc,1,3,detect,frac3) ! CCRes-H
+c               call get_xsecfrac3(E,icc,1,4,detect,frac4) ! CCRes-O
+c               frac = frac +fxsec_CCRes*(frac3 +frac4)
+c            endif
+cc            xsec = xsec_CC(detect,E)*frac  ! for re-evaluation paper
+cc            xsec = fxsec_CCQE*xsec_CCQE(detect,E)
+cc            xsec = xsec_CCQE(detect,E)
+c            xsec = xsec_CCQE(detect,E)*frac
+c         elseif (ismear.eq.1) then
 c            xsec = xsec_CC(detect,E) ! for re-evaluation paper
             xsec = xsec_CCQE(detect,E)
-         endif
+c         endif
+
       elseif (icc.eq.2) then
+
 CCC     Fluxes ! Total flux is used for NC events   
          if (nu_mode.eq.1) then ! nu_flux
             if (beam.eq.1) then
@@ -298,8 +303,10 @@ CCC     Fluxes ! Total flux is used for NC events
             endif
          endif
 c         flux = flux_beam(beam,oab,nu_mode,E,L)
-CCC     Cross sections
+
+CCC      NC Cross sections
          xsec = fxsec_NCpi0*xsec_NC(detect,E)
+
       endif
 c      xsec_CCQE(detect,E)/(100*1d9*avog)
 c      xsec = xsec_CCQE(detect,E)
@@ -307,6 +314,7 @@ c      xsec = xsec_CC(detect,E)/(33.6d30*8) ! nu_e-H2O xsec/neutron
 c      xsec = xsec_CC(detect,E)/(33.6d30*10) ! bar{nu}_e-H2O xsec/proton
 c      xsec = xsec_CC(detect,E)/(3.34d31*8)*4.89d33/18d0 ! nu_e-H2O xsec/neutron scaled to 1kton LS
 c      xsec = xsec_CC(detect,E)/(3.34d31*10)*6.24d33/18d0 ! bar{nu}_e-H2O xsec/proton scaled to 1kton LS
+
       if (ihfunc.eq.0) then
          hrho = frho*rho
          if (icc.eq.1) then

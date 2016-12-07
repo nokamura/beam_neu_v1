@@ -1,8 +1,11 @@
 c      subroutine get_event(z,iproc,eventout,neventout)
       subroutine get_event(z,iproc,eventout)
-C     ****************************************************
+C     **********************************************************
 C     By Yoshitaro Takaesu @KIAS JAN 7 2014
-C     ****************************************************
+C     Modified: Dec 7 2016: Remove the ismear switch. It is put
+C                           in the get_nudist and get_1pi0dist
+C                           subroutines directly.
+C     **********************************************************
       implicit none
 C     GLOBAL VARIABLES
       include 'inc/params.inc'
@@ -25,24 +28,31 @@ C     EXTERNAL FUNCTIONS
 C     ----------
 C     BEGIN CODE
 C     ----------
+CCC   Set basic bins
       call bining_basic(Emin,Emax,basic_binsize,nbins_basic,x_basic)
+
+CCC   Calculate unsmeared event distributions
       call MakeHisto1D(nout,hfunc1D,z,rnevent_ren,nbins_basic
      &     ,x_basic,evform,serror,snmax,ihisto,event_tmp1
      &     ,hevent_tmp1,nevent_tmp1,ierr) 
 
+CCC   Initialize the "event_tmp2" array
       do j = 1,imaxint
          do i = 1,nbins_basic
             event_tmp2(i,j) = 0d0
          enddo
       enddo
 
-      if (ismear.eq.0) then
-         do i = 1,nbins_basic
-            event_tmp2(i,1) = event_tmp1(i)
-         enddo
-         nevent_tmp2 = nevent_tmp1
-      elseif (ismear.eq.1) then
-         if (icc.eq.1) then  ! CC interactions
+CCC   Calculate smeared event distributions
+c      if (ismear.eq.0) then
+c         do i = 1,nbins_basic
+c            event_tmp2(i,1) = event_tmp1(i)
+c         enddo
+c         nevent_tmp2 = nevent_tmp1
+c      elseif (ismear.eq.1) then
+
+CCC      CC interactions
+         if (icc.eq.1) then  
             if (iproc.eq.abs(detect)) then
                if (detect.gt.0) then
                   fxsec_CCQE = z(7)
@@ -54,7 +64,9 @@ C     ----------
                call get_nudist(detect,event_tmp1,event_tmp2
      &              ,nevent_tmp2)
             endif
-         elseif (icc.eq.2) then ! NC intractions
+
+CCC      NC intractions
+         elseif (icc.eq.2) then 
             if (iproc.eq.3) then
                if (ipi0unc.eq.0) then
                   fxsec_pirs = z(54)
@@ -67,8 +79,9 @@ C     ----------
      &              ,nevent_tmp1,x_basic,nbins_basic,event_tmp2)
             endif
          endif      
-      endif
+c      endif
 
+CCC   Make output "eventout" array by combining adjuscent bins to ensure >= 10 events in all the bins.
       do j = 1,imaxint
          ite = 0
          ibins = 1

@@ -90,6 +90,7 @@ c         if (ipi0xsec.eq.1) then
       subroutine get_1pi0dist_mode(int_mode,Ev,rievent,ibin,event_mode)
 C     ****************************************************
 C     By Yoshitaro Takaesu @KIAS Mar 12 2014
+C     Modified: Dec 7 2016: make dependent on the ismear switch
 C
 C     ****************************************************
       implicit none
@@ -118,39 +119,65 @@ C     EXTERNAL FUNCTIONS
 C     ----------
 C     BEGIN CODE
 C     ----------
-      if (int_mode.eq.2) then ! for resonant 1pi0BG
-         if (ipi0unc.eq.0) then ! for independent uncertainties for NCRS and NCCO 1pi0BG
+CCC   Initialization
+      ierr = 0
+      do i = 1,nbins_basic
+         event_mode(i) = 0d0
+      enddo
+
+CCC   For resonant 1pi0BG
+      if (int_mode.eq.2) then 
+CCC      For independent uncertainties for NCRS 1pi0BG
+         if (ipi0unc.eq.0) then 
             fpi = fxsec_pirs
-         elseif (ipi0unc.eq.1) then ! for correlated uncertainties for NCRS and NCCO 1pi0BG
+CCC      For correlated uncertainties for NCRS 1pi0BG
+         elseif (ipi0unc.eq.1) then 
             fpi = ratioRS
+CCC      No uncertainties for NCRS 1pi0BG
          elseif (ipi0unc.eq.2) then 
             fpi = 1d0
          endif
-      elseif (int_mode.eq.4) then ! for coherent 1pi0BG
+
+CCC   For coherent 1pi0BG
+      elseif (int_mode.eq.4) then 
+CCC      For independent uncertainties for NCCO 1pi0BG
          if (ipi0unc.eq.0) then
             fpi = fxsec_pico
+CCC      For correlated uncertainties for NCCO 1pi0BG
          elseif (ipi0unc.eq.1) then
             fpi = ratioCO
+CCC      No uncertainties for NCCO 1pi0BG
          elseif (ipi0unc.eq.2) then 
             fpi = 1d0
          endif
+
+CCC   For other possibilities
       else
          fpi = 1d0
       endif      
+
+CCC   Calculate event number fraction of a mode
       call get_xsecfrac3(Ev,icc,ipi0xsec,int_mode,detect,frac)
+
       rievent2 = rievent*frac*fpi
       z(1) = detect
       z(2) = Ev
       z(3) = int_mode
-      if (ipi0xsec.eq.0) then      ! NC 1pi0
-         if (ipi0dist.eq.0) then   ! Erec dist
+
+CCC   NC 1pi0 distribution
+      if (ipi0xsec.eq.0) then      
+
+CC       Erec distribution
+         if (ipi0dist.eq.0) then   
             write(97,*) "ERROR:get_1pi0dist.f:fpi0_Erec still",
      &           " does not support the separate int_mode output."
             stop
 c            call MakeHisto1D(nout,fpi0_Erec,z,rievent2,nbins,x
 c     &           ,evform,serror,snmax,ihisto,event_mode,hevent_mode
 c     &           ,rnevent_mode,ierr)
-         elseif (ipi0dist.eq.1) then ! momentum dist
+
+CC       Momentum distribution
+         elseif (ipi0dist.eq.1) then 
             write(97,*) "ERROR:get_1pi0dist.f:fpi0_mom still",
      &           " does not support the separate int_mode output."
             stop
@@ -158,22 +185,42 @@ c            call MakeHisto1D(nout,fpi0mom,z,rievent2,nbins,x
 c     &           ,evform,serror,snmax,ihisto,event_mode,hevent_mode
 c     &           ,rnevent_mode,ierr)
          endif
-      elseif (ipi0xsec.eq.1) then  ! NC pi0-bg (polfit missID)
-         if (ipi0dist.eq.0) then   ! Erec dist
-            call MakeHisto1D(nout,fErec_1pi0dist,z,rievent2,nbins,x
-     &           ,evform,serror,snmax,ihisto,event_mode,hevent_mode
-     &           ,rnevent_mode,ierr)
+
+CCC   NC pi0-bg (polfit missID) distribution
+      elseif (ipi0xsec.eq.1) then  
+
+CC       Erec distribution
+         if (ipi0dist.eq.0) then   
+            if (ismear.eq.0) then
+               event_mode(ibin) = rievent2
+            elseif (ismear.eq.1) then
+               call MakeHisto1D(nout,fErec_1pi0dist,z,rievent2,nbins,x
+     &              ,evform,serror,snmax,ihisto,event_mode,hevent_mode
+     &              ,rnevent_mode,ierr)
+            endif
          endif
+
+CC       Momentum distribution
          if (ipi0dist.eq.1) then
             write(97,*) "ERROR:get_1pi0dist.f:momentum distribution",
      &           " for NC pi0-bg (polfit) is not supported."
             stop
          endif
-      elseif (ipi0xsec.eq.2) then  ! NC pi0-bg (old_func missID)
-         if (ipi0dist.eq.0) then   ! Erec dist
-            call MakeHisto1D(nout,fpi0_Erec_old,z,rievent2,nbins,x
-     &           ,evform,serror,snmax,ihisto,event_mode,hevent_mode
-     &           ,rnevent_mode,ierr)
+
+CCC   NC pi0-bg (old_func missID) distribution
+      elseif (ipi0xsec.eq.2) then  
+
+CC       Erec distribution
+         if (ipi0dist.eq.0) then
+            if (ismear.eq.0) then
+               event_mode(ibin) = rievent2
+            elseif (ismear.eq.1) then
+               call MakeHisto1D(nout,fpi0_Erec_old,z,rievent2,nbins,x
+     &              ,evform,serror,snmax,ihisto,event_mode,hevent_mode
+     &              ,rnevent_mode,ierr)
+            endif
+
+CC       Momentum distribution
          elseif (ipi0dist.eq.1) then ! momentum dist
             write(97,*) "ERROR:get_1pi0dist.f:momentum distribution",
      &           " for NC pi0-bg (old) is not supported."
@@ -182,7 +229,10 @@ c            call MakeHisto1D(nout,fpi0mom_old,z,rievent2,nbins,x
 c     &           ,evform,serror,snmax,ihisto,event_mode,hevent_mode
 c     &           ,rnevent_mode,ierr)
          endif
+
       endif
+
+CCC   Show ERROE message
       if (ierr.ne.0) then
          write(97,*) "get_1pi0dist: MakeHisto1D ierr = 1"
       endif         

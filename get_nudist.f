@@ -33,9 +33,11 @@ C     ----------
             event_out(i,j) = 0d0
          enddo
       enddo
+
       do i = 1,nbins_basic
          Ev = ( x_basic(i) +x_basic(i-1) )/2d0
          rievent = event_in(i)
+
          if (iCCQE.eq.1) then  ! include CCQE events
             do int_mode = 1,2            
                call get_nudist_mode2(inutype,int_mode,Ev,rievent,i
@@ -46,6 +48,7 @@ C     ----------
                enddo
             enddo
          endif
+
          if (iCCRes.eq.1) then ! include Res events
             do int_mode = 3,4
                call get_nudist_mode2(inutype,int_mode,Ev,rievent,i
@@ -56,6 +59,7 @@ C     ----------
                enddo
             enddo
          endif         
+
       enddo
 
       return
@@ -64,10 +68,11 @@ C     ----------
 
       subroutine get_nudist_mode2(inutype,int_mode,Ev,rievent,ibin
      &     ,event_mode)
-C     ****************************************************
+C     *********************************************************
 C     By Yoshitaro Takaesu @KIAS OCT 11 2013
+C     Modified: Dec 7 2016: make dependent on the ismear switch
 C
-C     ****************************************************
+C     *********************************************************
       implicit none
 C     GLOBAL VARIABLES
       include 'inc/params.inc'
@@ -89,24 +94,42 @@ C     EXTERNAL FUNCTIONS
 C     ----------
 C     BEGIN CODE
 C     ----------
+CCC   Initializaion
+      ierr = 0
+      do i = 1,nbins_basic
+         event_mode(i) = 0d0
+      enddo
+
+CCC   Calculate event number fraction of the int_mode
       call get_xsecfrac3(Ev,icc,1,int_mode,inutype,frac)
-      if ((inutype.gt.0).and.(int_mode.eq.3)) then   !  We ignore the neutrino CCRes-H interaction as an approximation. (To be considered later)
+
+CCC   We ignore the neutrino CCRes-H interaction as an approximation. (To be considered later)
+      if ((inutype.gt.0).and.(int_mode.eq.3)) then   
          frac = 0d0
       endif
+
       if (iCCQE.eq.1) then
 c         frac = 0.5d0           ! when using xsec_CCQE for CCQE event
          continue
       endif
+
+CCC   Make smeared histogram
       rievent2 = rievent*frac
       z(1) = inutype
       z(2) = int_mode
       z(3) = Ev
-      call MakeHisto1D(nout,fErec_dist,z,rievent2,nbins_basic,x_basic
-     &     ,evform,serror,snmax,ihisto,event_mode,hevent_mode
-     &     ,rnevent_mode,ierr)
+      if (ismear.eq.0) then
+         event_mode(ibin) = rievent2
+      elseif (ismear.eq.1) then
+         call MakeHisto1D(nout,fErec_dist,z,rievent2,nbins_basic,x_basic
+     &        ,evform,serror,snmax,ihisto,event_mode,hevent_mode
+     &        ,rnevent_mode,ierr)
+      endif
+
+CCC   Show ERROR message
       if (ierr.ne.0) then
          write(*,*) "get_nudist_mode: MakeHisto1D ierr = 1"
       endif
-         
+        
       return
       end
