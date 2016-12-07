@@ -1,10 +1,13 @@
       subroutine MakeHisto1D(nout,f,z,nevent,nbins,x,evform,error,nmax
      &     ,mode,event,hevent,nevent_th,ierr)
-C     ****************************************************
+C     ****************************************************************
 C     By Yoshitaro Takaesu @KIAS AUG 25 2012
+C     Modified: Dec 7 2016: Function "f" is evaluated at the center 
+C                           points of each bin for mode = 0
 C
-C     mode: 0:no histogram 1:histo 2:left-point histo 3:center-point histo
-C     ****************************************************
+C     mode: 0:no histogram 1:histo 2:left-point histo 3:center-point 
+C           histo     
+C     *****************************************************************
       implicit none
 
 C     ARGUMENTS 
@@ -31,8 +34,8 @@ C     ----------
 
       if (mode.eq.0) then
          do i = 1,nbins
-c            cx = ( x(i) +x(i-1) )/2d0
-            cx = x(i-1)
+            cx = ( x(i) +x(i-1) )/2d0
+c            cx = x(i-1)
             event(i) = f(cx,z)
             hevent(i) = 0d0
             nevent_th = 0d0
@@ -69,33 +72,42 @@ c            cx = ( x(i) +x(i-1) )/2d0
             hevent(i) = event(i)/dx(i)
             nevent_th = nevent_th +event(i)
          enddo
+
+ccc   Histogram (center-of-bin_value*basic_binsize) Event numbers are normalized to the "nevent" argument.
       elseif (mode.eq.2) then
+cc    Calculate the total event number 
          do i = 1,nbins
             dx(i) = x(i) -x(i-1)         
             mx = x(i-1) +dx(i)/2d0
             y(i) = f(mx,z)*dx(i)
             sumy = sumy +y(i)
          enddo
+
+cc    Set rnevent
          if (nevent.lt.0d0) then
             sumy = 1d0
             rnevent = 1d0
          else
             rnevent = nevent
          endif
+
+cc    Calculate event array
          do i = 1,nbins
             if (sumy.eq.0d0) then
                event(i) = 0d0
             else
-               if (evform.eq.1) then
+               if (evform.eq.1) then  ! integer event numbers
                   event(i) = idint( y(i)*rnevent/sumy )
-               elseif (evform.eq.2) then
+               elseif (evform.eq.2) then  ! real event numbers
                   event(i) = y(i)*rnevent/sumy
                endif
             endif
-            hevent(i) = event(i)/dx(i)
-            nevent_th = nevent_th +event(i) 
+            hevent(i) = event(i)/dx(i) ! Convert to event number density
+            nevent_th = nevent_th +event(i) ! Set output nevent_th array 
          enddo
-      elseif (mode.eq.3) then
+
+ccc   Histogram (left-of-bin_value*basic_binsize) Event numbers are not normalized to the "nevent" argument.
+      elseif (mode.eq.3) then  
          do i = 1,nbins
             dx(i) = x(i) -x(i-1)
             xi = x(i-1)
