@@ -126,7 +126,8 @@ c     &            ," NCDI, NCCO+NCDF for NC events"
             enddo
          endif         
          write(ilun,'(f5.3,f10.5,f10.5,f10.5,f10.5,f10.5)') 
-     &        x(i),tot,ans(1),ans(2),ans(3),ans(4)
+c     &        x(i),tot,ans(1),ans(2),ans(3),ans(4)
+     &        (x(i+1)+x(i))/2d0,tot,ans(1),ans(2),ans(3),ans(4)
       enddo
       
       return
