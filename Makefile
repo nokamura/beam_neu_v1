@@ -6,7 +6,7 @@ LIBS_MYLIB = -lmylib -lminuit
 
 LIBS          = $(LIBS_MYLIB)
 
-OBJS_main       = main.o hfunc1D.o minfunc.o smearing.o gran.o funcs.o\
+OBJS_main       = main.o hfunc1D.o minfunc.o gran.o funcs.o\
 		  MakeHisto1D.o hsimpson1D.o chi2.o \
 		  hmffrd.o bsffrd.o comsep.o msgout.o tolow.o leng.o \
 		  interpolate.o CEigensystem.o zheevj3.o sqrabs.o \
