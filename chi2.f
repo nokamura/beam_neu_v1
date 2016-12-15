@@ -204,8 +204,8 @@ C     ----------
          sumth = sumth +th(i)
          if (ipos.eq.nn) then
             if (sumdat.gt.iminevents) then
-               sgm2 = sumdat
-c               sgm2 = sumth
+c               sgm2 = sumdat
+               sgm2 = sumth
                outnbins = outnbins + 1
                outx(outnbins) = x(i) 
                chi2bin(outnbins) = ( sumdat -sumth )**2 / sgm2
