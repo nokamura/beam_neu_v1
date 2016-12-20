@@ -66,8 +66,8 @@ CCCCCCCCCCCCCCCC  Event distributions  CCCCCCCCCCCCCCCCCCCCCCCCCCCC
       call prepare_events
       call display_results
       if (mode.eq.0) then
-         call write_data_oscsum(1)
-c         call write_data(1)
+c         call write_data_oscsum(1)
+         call write_data_oscsum_nuanu(1)
       elseif (mode.eq.1) then
 c         call write_chi2event_dat
 c         call write_chi2event_th

@@ -21,7 +21,8 @@ OBJS_main       = main.o hfunc1D.o minfunc.o gran.o funcs.o\
 		  get_event_all.o get_recevent.o \
 		  classify_recevent.f apply_Ereccut.o write_chi2event.o \
 		  write_params.f write_params_unit.o set_params.o \
-		  write_data_oscsum.o write_data.o make_prob_data.o write_pulls.o
+		  write_data_oscsum.o write_data_oscsum_nuanu.o write_data.o  \
+		  make_prob_data.o write_pulls.o
 
 OBJS_smeardist_mono  = smeardist_mono.o get_nudist_mode.o MakeHisto1D.o \
 		       hsimpson1D.o fErec_dist.o get_xsecfrac.o read_histo.o
