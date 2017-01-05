@@ -13,13 +13,13 @@ C     LOCAL VARIABLES
       integer i
       integer binsize_factor_tmp,ihfunc_tmp,ihisto_tmp
       integer MH_tmp,nu_mode_tmp,detect_nu_tmp,ierr,ismear_tmp
+      integer nbins_loc
       real*8 Emin_tmp,Emax_tmp,basic_binsize_tmp,L_tmp,V_tmp,icc_tmp
       real*8 eventout(maxnbin),heventout(maxnbin),neventout,Y_tmp
       real*8 event_tmp(maxnbin),hevent_tmp(maxnbin),nevent_tmp
       real*8 E,frac,eventout2(maxnbin),iD_tmp,rho_tmp,oab_tmp
       real*8 eventout_nm(maxnbin),eventout_am(maxnbin)
       real*8 eventout_ne(maxnbin),eventout_ae(maxnbin)
-      integer nbins_loc
       real*8 xmin,xmax,binsize_loc
       real*8 xl(0:maxnbin),yyl(0:maxnbin)
       character*2 exp
@@ -52,100 +52,56 @@ C     ----------
       binsize_factor = 5
       evform = evform_dat
 
-C
-C     Flux	 
-C     
+
+CCC
+CCC     Total number of neutrino at J-PARC
+CCC     
       icc = 1 ! dummy
       detect = 1 ! dummy
       ihfunc = 1               ! ihfunc 
       ihisto = 2
       binsize_loc = basic_binsize*binsize_factor
+      L = 1
+
+      oab = 0
+c      call write_totnum(exp,xmin,xmax,binsize_loc)
+
+
+CCC
+CCC     Flux	 
+CCC     
+      icc = 1 ! dummy
+      detect = 1 ! dummy
+      ihfunc = 1               ! ihfunc 
+      ihisto = 2
+      binsize_loc = basic_binsize*binsize_factor
+      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
 
       if (iSK.eq.1) then
          exp = "SK"  ! two charactors
          L = SL
          oab = SOAB
-         call write_flux_det(exp,xmin,xmax,binsize_loc)         
+         call write_flux_det(exp,nbins_loc,xl,yyl)         
       endif
 
       if (iOki.eq.1) then
          exp = "Ok"  ! two charactors
          L = OL
          oab = OOAB
-         call write_flux_det(exp,xmin,xmax,binsize_loc)         
+         call write_flux_det(exp,nbins_loc,xl,yyl)         
       endif
 
       if (iKr.eq.1) then
+         exp = "Kr"  ! two charactors
          L = KL
          oab = KOAB         
-
-         beam = 1
-         binsize_loc = basic_binsize*binsize_factor
-         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-
-         nu_mode = 1         ! nu_e flux
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout_ne
-     &        ,heventout,neventout,ierr) 
-         nu_mode = 2         ! nu_mu flux
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout_nm
-     &        ,heventout,neventout,ierr) 
-         nu_mode = -1         ! anti-nu_e flux
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout_ae
-     &        ,heventout,neventout,ierr) 
-         nu_mode = -2         ! anti-nu_mu flux
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout_am
-     &        ,heventout,neventout,ierr) 
-
-         open(1,file="fluxn_Kr.dat",status="replace")
-         write(1,*) "# neutrino flux data"
-         write(1,*) "# Columns: Enu [GeV], fluxes for nu_e, nu_mu"
-     &        ,", bar nu_e, bar nu_mu [1/cm^2/50MeV/10^{21}POT]"
-         do i = 0,nbins_loc-1
-            write(1,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
-     &           ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
-         enddo
-         close(1)
-
-         beam = -1
-         binsize_loc = basic_binsize*binsize_factor
-         call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-
-         nu_mode = 1         ! nu_e flux
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout_ne
-     &        ,heventout,neventout,ierr) 
-         nu_mode = 2         ! nu_mu flux
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout_nm
-     &        ,heventout,neventout,ierr) 
-         nu_mode = -1         ! anti-nu_e flux
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout_ae
-     &        ,heventout,neventout,ierr) 
-         nu_mode = -2         ! anti-nu_mu flux
-         call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &        ,xl,evform,serror,snmax,ihisto,eventout_am
-     &        ,heventout,neventout,ierr) 
-
-         open(1,file="fluxa_Kr.dat",status="replace")
-         write(1,*) "# neutrino flux data"
-         write(1,*) "# Columns: Enu [GeV], fluxes for nu_e, nu_mu"
-     &        ,", bar nu_e, bar nu_mu [1/cm^2/50MeV/10^{21}POT]"
-         do i = 0,nbins_loc-1
-            write(1,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
-     &           ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
-         enddo
-         close(1)
-
+         call write_flux_det(exp,nbins_loc,xl,yyl)
       endif
 
-c     
-c     Transition Probability
-c     
+
+CCC     
+CCC     Transition Probability
+CCC     
       ihfunc = 2
       ihisto = 0
       ismear = 0
@@ -577,7 +533,7 @@ c$$$      close(1)
       end
 
 
-      subroutine write_flux_det(exp,xmin,xmax,binsize_loc)
+      subroutine write_flux_det(exp,nbins_loc,xl,yyl)
 C     ****************************************************
 C     By Yoshitaro Takaesu @ U.Okayama  JAN 05 2016
 C     ****************************************************
@@ -586,7 +542,8 @@ C     GLOBAL VARIABLES
       include 'inc/params.inc'
 C     CONSTANTS
 C     ARGUMENTS       
-      real*8 binsize_loc,xmin,xmax
+      integer nbins_loc
+      real*8 xl(0:maxnbin),yyl(0:maxnbin)
       character*2 exp
 C     LOCAL VARIABLES
       character*12 file_name
@@ -596,17 +553,17 @@ C     BEGIN CODE
 C     ----------
       beam = 1
       file_name = "fluxn_"//exp//".dat"
-      call write_flux(xmin,xmax,binsize_loc,file_name)
+      call write_flux(file_name,nbins_loc,xl,yyl)
       
       beam = -1
       file_name = "fluxa_"//exp//".dat"
-      call write_flux(xmin,xmax,binsize_loc,file_name)
+      call write_flux(file_name,nbins_loc,xl,yyl)
       
       return
       end
 
 
-      subroutine write_flux(xmin,xmax,binsize_loc,file_name)
+      subroutine write_flux(file_name,nbins_loc,xl,yyl)
 C     ****************************************************
 C     By Yoshitaro Takaesu @ U.Okayama JAN 05 2016
 C     ****************************************************
@@ -617,10 +574,11 @@ C     GLOBAL VARIABLES
       include 'inc/minfunc.inc'
 C     CONSTANTS
 C     ARGUMENTS       
-      real*8 binsize_loc,xl(0:maxnbin),yyl(0:maxnbin),xmin,xmax
+      integer nbins_loc
+      real*8 xl(0:maxnbin),yyl(0:maxnbin)
       character*12 file_name
 C     LOCAL VARIABLES
-      integer i,nbins_loc,ierr
+      integer i,ierr
       real*8 heventout(maxnbin),neventout
       real*8 eventout_nm(maxnbin),eventout_am(maxnbin)
       real*8 eventout_ne(maxnbin),eventout_ae(maxnbin)
@@ -630,8 +588,6 @@ C     EXTERNAL FUNCTIONS
 C     ----------
 C     BEGIN CODE
 C     ----------
-      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-      
       nu_mode = 1               ! nu_e flux
       call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
      &     ,xl,evform,serror,snmax,ihisto,eventout_ne
@@ -653,6 +609,7 @@ C     ----------
       write(1,*) "# neutrino flux data"
       write(1,*) "# Columns: Enu [GeV], fluxes for nu_e, nu_mu"
      &     ,", bar nu_e, bar nu_mu [1/cm^2/50MeV/10^{21}POT]"
+      write(1,*) " "
       do i = 0,nbins_loc-1
          write(1,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
      &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
