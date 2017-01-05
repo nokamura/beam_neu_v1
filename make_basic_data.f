@@ -388,101 +388,85 @@ c      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
       endif
          
 
-c     
-c     Xsec
-c     
+CCC     
+CCC     Xsec
+CCC     
 c      z_dat(115) = 3
       ihfunc = 3
       ihisto = 1
       ismear = 1
+      binsize_loc = basic_binsize*binsize_factor
+      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
 
       icc = 1
 c      z_dat(150) = 1               ! CC
       detect = 1
 c      z_dat(118) = 1               ! detected neutrino
-      binsize_loc = basic_binsize*binsize_factor
-      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
       call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout
+     &     ,xl,evform,serror,snmax,ihisto,eventout_ne
      &     ,heventout,neventout,ierr) 
-      open(1,file="xsec_cc_ne.dat",status="replace")
-      do i = 0,nbins_loc-1
-         write(1,*) (xl(i) +xl(i+1))/2d0,eventout(i+1)
-      enddo
-      close(1)
       detect = 2
 c      z_dat(118) = 2               ! detected neutrino
       call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout
+     &     ,xl,evform,serror,snmax,ihisto,eventout_nm
      &     ,heventout,neventout,ierr) 
-      open(1,file="xsec_cc_nm.dat",status="replace")
-      do i = 0,nbins_loc-1
-         write(1,*) (xl(i) +xl(i+1))/2d0,eventout(i+1)
-      enddo
-      close(1)
       detect = -1
 c      z_dat(118) = -1              ! detected neutrino
       call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout
+     &     ,xl,evform,serror,snmax,ihisto,eventout_ae
      &     ,heventout,neventout,ierr) 
-      open(1,file="xsec_cc_ae.dat",status="replace")
-      do i = 0,nbins_loc-1
-         write(1,*) (xl(i) +xl(i+1))/2d0,eventout(i+1)
-      enddo
-      close(1)
       detect = -2
 c      z_dat(118) = -2              ! detected neutrino
       call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout
+     &     ,xl,evform,serror,snmax,ihisto,eventout_am
      &     ,heventout,neventout,ierr) 
-      open(1,file="xsec_cc_am.dat",status="replace")
+
+      open(1,file="xsec_ccqe.dat",status="replace")
+      write(1,*) "# Neutrino CCQE cross section data"
+      write(1,*) "# Columns: Enu [GeV], xsecs for nu_e, nu_mu"
+     &     ,", bar nu_e, bar nu_mu []"
+      write(1,*) " "
       do i = 0,nbins_loc-1
-         write(1,*) (xl(i) +xl(i+1))/2d0,eventout(i+1)
+         write(1,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
+     &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
       enddo
       close(1)
       
+
       icc = 2
 c      z_dat(150) = 0               ! NC
       detect = 1
 c      z_dat(118) = 1               ! detected neutrino
       call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout
+     &     ,xl,evform,serror,snmax,ihisto,eventout_ne
      &     ,heventout,neventout,ierr) 
-      open(1,file="xsec_nc_ne.dat",status="replace")
-      do i = 0,nbins_loc-1
-         write(1,*) (xl(i) +xl(i+1))/2d0,eventout(i+1)
-      enddo
-      close(1)
       detect = 2
 c      z_dat(118) = 2               ! detected neutrino
       call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout
+     &     ,xl,evform,serror,snmax,ihisto,eventout_nm
      &     ,heventout,neventout,ierr) 
-      open(1,file="xsec_nc_nm.dat",status="replace")
-      do i = 0,nbins_loc-1
-         write(1,*) (xl(i) +xl(i+1))/2d0,eventout(i+1)
-      enddo
-      close(1)
       detect = -1
 c      z_dat(118) = -1              ! detected neutrino
       call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout
+     &     ,xl,evform,serror,snmax,ihisto,eventout_ae
      &     ,heventout,neventout,ierr) 
-      open(1,file="xsec_nc_ae.dat",status="replace")
-      do i = 0,nbins_loc-1
-         write(1,*) (xl(i) +xl(i+1))/2d0,eventout(i+1)
-      enddo
-      close(1)
       detect = -2
 c      z_dat(118) = -2              ! detected neutrino
       call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout
+     &     ,xl,evform,serror,snmax,ihisto,eventout_am
      &     ,heventout,neventout,ierr) 
-      open(1,file="xsec_nc_am.dat",status="replace")
+      open(1,file="xsec_nc.dat",status="replace")
+      write(1,*) "# Neutrino NC cross section data"
+      write(1,*) "# Columns: Enu [GeV], xsecs for nu_e, nu_mu"
+     &     ,", bar nu_e, bar nu_mu []"
+      write(1,*) " "
       do i = 0,nbins_loc-1
-         write(1,*) (xl(i) +xl(i+1))/2d0,eventout(i+1)
+         write(1,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
+     &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
       enddo
       close(1)
+
+
 
 c$$$c
 c$$$c     Flux*P*xsec
