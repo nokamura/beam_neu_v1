@@ -54,63 +54,6 @@ C     ----------
 
 
 CCC
-CCC     Total number of neutrino at J-PARC
-CCC     
-      icc = 1 ! dummy
-      detect = 1 ! dummy
-      ihfunc = 1               ! ihfunc 
-      ihisto = 2
-      binsize_loc = basic_binsize*binsize_factor
-      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-      L = 1 ! km
-
-      oab = 0d0
-      exp = "00"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 0.5d0
-      exp = "05"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 0.6d0
-      exp = "06"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 0.8d0
-      exp = "08"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 0.9d0
-      exp = "09"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 1.0d0
-      exp = "10"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 1.1d0
-      exp = "11"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 1.2d0
-      exp = "12"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 1.3d0
-      exp = "13"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 1.4d0
-      exp = "14"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 1.5d0
-      exp = "15"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 2.0d0
-      exp = "20"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 2.3d0
-      exp = "23"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 2.5d0
-      exp = "25"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-      oab = 3.0d0
-      exp = "30"
-      call write_totnum_det(exp,nbins_loc,xl,yyl)
-
-CCC
 CCC     Flux	 
 CCC     
       icc = 1 ! dummy
@@ -119,6 +62,54 @@ CCC
       ihisto = 2
       binsize_loc = basic_binsize*binsize_factor
       call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
+
+      L = 1 ! km
+
+      oab = 0d0
+      exp = "00"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 0.5d0
+      exp = "05"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 0.6d0
+      exp = "06"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 0.8d0
+      exp = "08"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 0.9d0
+      exp = "09"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 1.0d0
+      exp = "10"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 1.1d0
+      exp = "11"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 1.2d0
+      exp = "12"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 1.3d0
+      exp = "13"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 1.4d0
+      exp = "14"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 1.5d0
+      exp = "15"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 2.0d0
+      exp = "20"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 2.3d0
+      exp = "23"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 2.5d0
+      exp = "25"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
+      oab = 3.0d0
+      exp = "30"
+      call write_flux_det(exp,nbins_loc,xl,yyl)
 
       if (iSK.eq.1) then
          exp = "SK"  ! two charactors
@@ -650,6 +641,7 @@ C     ----------
       
       open(1,file=file_name,status="replace")
       write(1,*) "# neutrino flux data"
+      write(1,*) "# L = ", L, "km, OAB = ", oab,"deg."
       write(1,*) "# Columns: Enu [GeV], fluxes for nu_e, nu_mu"
      &     ,", bar nu_e, bar nu_mu [1/cm^2/50MeV/10^{21}POT]"
       write(1,*) " "
