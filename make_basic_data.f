@@ -67,69 +67,69 @@ CCC
 
       oab = 0d0
       exp = "00"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 0.5d0
       exp = "05"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 0.6d0
       exp = "06"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 0.8d0
       exp = "08"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 0.9d0
       exp = "09"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 1.0d0
       exp = "10"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 1.1d0
       exp = "11"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 1.2d0
       exp = "12"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 1.3d0
       exp = "13"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 1.4d0
       exp = "14"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 1.5d0
       exp = "15"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 2.0d0
       exp = "20"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 2.3d0
       exp = "23"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 2.5d0
       exp = "25"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
       oab = 3.0d0
       exp = "30"
-      call write_flux_det(exp,nbins_loc,xl,yyl)
+      call write_flux_det(exp,nbins_loc,xl)
 
       if (iSK.eq.1) then
          exp = "SK"  ! two charactors
          L = SL
          oab = SOAB
-         call write_flux_det(exp,nbins_loc,xl,yyl)         
+         call write_flux_det(exp,nbins_loc,xl)         
       endif
 
       if (iOki.eq.1) then
          exp = "Ok"  ! two charactors
          L = OL
          oab = OOAB
-         call write_flux_det(exp,nbins_loc,xl,yyl)         
+         call write_flux_det(exp,nbins_loc,xl)         
       endif
 
       if (iKr.eq.1) then
          exp = "Kr"  ! two charactors
          L = KL
          oab = KOAB         
-         call write_flux_det(exp,nbins_loc,xl,yyl)
+         call write_flux_det(exp,nbins_loc,xl)
       endif
 
 
@@ -391,7 +391,6 @@ c      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
 CCC     
 CCC     Xsec
 CCC     
-c      z_dat(115) = 3
       ihfunc = 3
       ihisto = 1
       ismear = 1
@@ -399,27 +398,14 @@ c      z_dat(115) = 3
       call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
 
       icc = 1
-c      z_dat(150) = 1               ! CC
       detect = 1
-c      z_dat(118) = 1               ! detected neutrino
-      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout_ne
-     &     ,heventout,neventout,ierr) 
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ne)
       detect = 2
-c      z_dat(118) = 2               ! detected neutrino
-      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout_nm
-     &     ,heventout,neventout,ierr) 
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_nm)
       detect = -1
-c      z_dat(118) = -1              ! detected neutrino
-      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout_ae
-     &     ,heventout,neventout,ierr) 
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ae)
       detect = -2
-c      z_dat(118) = -2              ! detected neutrino
-      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout_am
-     &     ,heventout,neventout,ierr) 
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
 
       open(1,file="xsec_ccqe.dat",status="replace")
       write(1,*) "# Neutrino CCQE cross section data"
@@ -434,27 +420,15 @@ c      z_dat(118) = -2              ! detected neutrino
       
 
       icc = 2
-c      z_dat(150) = 0               ! NC
       detect = 1
-c      z_dat(118) = 1               ! detected neutrino
-      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout_ne
-     &     ,heventout,neventout,ierr) 
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ne)
       detect = 2
-c      z_dat(118) = 2               ! detected neutrino
-      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout_nm
-     &     ,heventout,neventout,ierr) 
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_nm)
       detect = -1
-c      z_dat(118) = -1              ! detected neutrino
-      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout_ae
-     &     ,heventout,neventout,ierr) 
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ae)
       detect = -2
-c      z_dat(118) = -2              ! detected neutrino
-      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout_am
-     &     ,heventout,neventout,ierr) 
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
+
       open(1,file="xsec_nc.dat",status="replace")
       write(1,*) "# Neutrino NC cross section data"
       write(1,*) "# Columns: Enu [GeV], xsecs for nu_e, nu_mu"
@@ -551,7 +525,7 @@ c$$$      close(1)
       end
 
 
-      subroutine write_flux_det(exp,nbins_loc,xl,yyl)
+      subroutine write_flux_det(exp,nbins_loc,xl)
 C     ****************************************************
 C     By Yoshitaro Takaesu @ U.Okayama  JAN 05 2016
 C     ****************************************************
@@ -561,7 +535,7 @@ C     GLOBAL VARIABLES
 C     CONSTANTS
 C     ARGUMENTS       
       integer nbins_loc
-      real*8 xl(0:maxnbin),yyl(0:maxnbin)
+      real*8 xl(0:maxnbin)
       character*2 exp
 C     LOCAL VARIABLES
       character*12 file_name
@@ -571,57 +545,44 @@ C     BEGIN CODE
 C     ----------
       beam = 1
       file_name = "fluxn_"//exp//".dat"
-      call write_flux(file_name,nbins_loc,xl,yyl)
+      call write_flux(file_name,nbins_loc,xl)
       
       beam = -1
       file_name = "fluxa_"//exp//".dat"
-      call write_flux(file_name,nbins_loc,xl,yyl)
+      call write_flux(file_name,nbins_loc,xl)
       
       return
       end
 
 
-      subroutine write_flux(file_name,nbins_loc,xl,yyl)
+      subroutine write_flux(file_name,nbins_loc,xl)
 C     ****************************************************
 C     By Yoshitaro Takaesu @ U.Okayama JAN 05 2016
 C     ****************************************************
       implicit none
 C     GLOBAL VARIABLES
       include 'inc/params.inc'
-      include 'inc/main.inc'
-      include 'inc/minfunc.inc'
 C     CONSTANTS
 C     ARGUMENTS       
       integer nbins_loc
-      real*8 xl(0:maxnbin),yyl(0:maxnbin)
+      real*8 xl(0:maxnbin)
       character*12 file_name
 C     LOCAL VARIABLES
-      integer i,ierr
-      real*8 heventout(maxnbin),neventout
+      integer i
       real*8 eventout_nm(maxnbin),eventout_am(maxnbin)
       real*8 eventout_ne(maxnbin),eventout_ae(maxnbin)
 C     EXTERNAL FUNCTIONS
-      real*8 hfunc1D
-      external hfunc1D
 C     ----------
 C     BEGIN CODE
 C     ----------
       nu_mode = 1               ! nu_e flux
-      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout_ne
-     &     ,heventout,neventout,ierr) 
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ne)
       nu_mode = 2               ! nu_mu flux
-      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout_nm
-     &     ,heventout,neventout,ierr) 
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_nm)
       nu_mode = -1              ! anti-nu_e flux
-      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout_ae
-     &     ,heventout,neventout,ierr) 
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ae)
       nu_mode = -2              ! anti-nu_mu flux
-      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
-     &     ,xl,evform,serror,snmax,ihisto,eventout_am
-     &     ,heventout,neventout,ierr) 
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
       
       open(1,file=file_name,status="replace")
       write(1,*) "# neutrino flux data"
@@ -635,5 +596,36 @@ C     ----------
       enddo
       close(1)
       
+      return
+      end
+
+
+      subroutine wrap_MakeHisto1D(nbins_loc,xl,eventout)
+C     ****************************************************
+C     By Yoshitaro Takaesu @ U.Okayama JAN 05 2016
+C     ****************************************************
+      implicit none
+C     GLOBAL VARIABLES
+      include 'inc/params.inc'
+      include 'inc/main.inc'
+      include 'inc/minfunc.inc'
+C     CONSTANTS
+C     ARGUMENTS       
+      integer nbins_loc
+      real*8 xl(0:maxnbin)
+      real*8 eventout(maxnbin)
+C     LOCAL VARIABLES
+      integer ierr
+      real*8 heventout(maxnbin),neventout
+C     EXTERNAL FUNCTIONS
+      real*8 hfunc1D
+      external hfunc1D
+C     ----------
+C     BEGIN CODE
+C     ----------
+      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &     ,xl,evform,serror,snmax,ihisto,eventout
+     &     ,heventout,neventout,ierr) 
+
       return
       end
