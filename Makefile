@@ -16,7 +16,7 @@ OBJS_main       = main.o hfunc1D.o minfunc.o gran.o funcs.o\
 		  fpi0mom_old.o fpi0_Erec.o fpi0_Erec_old.o write_input.o \
 		  init_minuit.o write_minuit_results.o write_results_mode1.o \
 		  bining.o get_event.o get_event_nu.o get_event_pi0.o\
-		  get_event_allmode.o make_basic_data2.o init_minfunc.o \
+		  get_event_allmode.o make_basic_data.o init_minfunc.o \
 		  get_chisq_stat.o display_results.o prepare_events.o \
 		  get_event_all.o get_recevent.o \
 		  classify_recevent.f apply_Ereccut.o write_chi2event.o \
