@@ -61,11 +61,54 @@ CCC
       ihfunc = 1               ! ihfunc 
       ihisto = 2
       binsize_loc = basic_binsize*binsize_factor
-      L = 1
+      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
+      L = 1 ! km
 
-      oab = 0
-c      call write_totnum(exp,xmin,xmax,binsize_loc)
-
+      oab = 0d0
+      exp = "00"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 0.5d0
+      exp = "05"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 0.6d0
+      exp = "06"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 0.8d0
+      exp = "08"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 0.9d0
+      exp = "09"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 1.0d0
+      exp = "10"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 1.1d0
+      exp = "11"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 1.2d0
+      exp = "12"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 1.3d0
+      exp = "13"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 1.4d0
+      exp = "14"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 1.5d0
+      exp = "15"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 2.0d0
+      exp = "20"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 2.3d0
+      exp = "23"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 2.5d0
+      exp = "25"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
+      oab = 3.0d0
+      exp = "30"
+      call write_totnum_det(exp,nbins_loc,xl,yyl)
 
 CCC
 CCC     Flux	 
@@ -619,3 +662,91 @@ C     ----------
       return
       end
       
+
+      subroutine write_totnum_det(coab,nbins_loc,xl,yyl)
+C     ****************************************************
+C     By Yoshitaro Takaesu @ U.Okayama  JAN 05 2016
+C     ****************************************************
+      implicit none
+C     GLOBAL VARIABLES
+      include 'inc/params.inc'
+C     CONSTANTS
+C     ARGUMENTS       
+      integer nbins_loc
+      real*8 xl(0:maxnbin),yyl(0:maxnbin)
+      character*2 coab
+C     LOCAL VARIABLES
+      character*12 file_name
+C     EXTERNAL FUNCTIONS
+C     ----------
+C     BEGIN CODE
+C     ----------
+      beam = 1
+      file_name = "tot_n_"//coab//".dat"
+      call write_totnum(file_name,nbins_loc,xl,yyl)
+      
+      beam = -1
+      file_name = "tot_a_"//coab//".dat"
+      call write_totnum(file_name,nbins_loc,xl,yyl)
+      
+      return
+      end
+
+      subroutine write_totnum(file_name,nbins_loc,xl,yyl)
+C     ****************************************************
+C     By Yoshitaro Takaesu @ U.Okayama JAN 05 2016
+C     ****************************************************
+      implicit none
+C     GLOBAL VARIABLES
+      include 'inc/params.inc'
+      include 'inc/main.inc'
+      include 'inc/minfunc.inc'
+C     CONSTANTS
+C     ARGUMENTS       
+      integer nbins_loc
+      real*8 xl(0:maxnbin),yyl(0:maxnbin)
+      character*12 file_name
+C     LOCAL VARIABLES
+      integer i,ierr
+      real*8 heventout(maxnbin),neventout,factor
+      real*8 eventout_nm(maxnbin),eventout_am(maxnbin)
+      real*8 eventout_ne(maxnbin),eventout_ae(maxnbin)
+C     EXTERNAL FUNCTIONS
+      real*8 hfunc1D
+      external hfunc1D
+C     ----------
+C     BEGIN CODE
+C     ----------
+      nu_mode = 1               ! nu_e flux
+      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &     ,xl,evform,serror,snmax,ihisto,eventout_ne
+     &     ,heventout,neventout,ierr) 
+      nu_mode = 2               ! nu_mu flux
+      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &     ,xl,evform,serror,snmax,ihisto,eventout_nm
+     &     ,heventout,neventout,ierr) 
+      nu_mode = -1              ! anti-nu_e flux
+      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &     ,xl,evform,serror,snmax,ihisto,eventout_ae
+     &     ,heventout,neventout,ierr) 
+      nu_mode = -2              ! anti-nu_mu flux
+      call MakeHisto1D(nout,hfunc1D,z_dat,rnevent_ren,nbins_loc
+     &     ,xl,evform,serror,snmax,ihisto,eventout_am
+     &     ,heventout,neventout,ierr) 
+      
+      open(1,file=file_name,status="replace")
+      write(1,*) "# Effective total number of neutrinos at J-PARC"
+      write(1,*) "#     flux(at L cm away from J-PARC) * 4*pi*L^2"
+      write(1,*) "# Columns: Enu [GeV], total number for nu_e, nu_mu"
+     &     ,", bar nu_e, bar nu_mu [1/50MeV/10^{21}POT]"
+      write(1,*) " "
+      factor = 4*3.14159265358979d0*(L*1d5)**2
+      do i = 0,nbins_loc-1
+         write(1,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)*factor
+     &        ,eventout_nm(i+1)*factor,eventout_ae(i+1)*factor
+     &        ,eventout_am(i+1)*factor
+      enddo
+      close(1)
+      
+      return
+      end
