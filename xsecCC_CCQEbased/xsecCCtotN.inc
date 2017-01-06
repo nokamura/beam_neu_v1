@@ -34,7 +34,7 @@ C*/
 C#ifndef __XSECCCTOTN_H__
 C#define __XSECCCTOTN_H__
 C/*--------------------------------------------------------
-C// Neutrino xsection table at 100ktonyear
+C// Neutrino xsection table of a 100kton water-filled detector
 C// Enu(GeV), nu_e, bar{nu_e}, nu_mu, bar{nu_mu}, nu_tau, bar{nu_tau}
 C---------------------------------------------------------*/
       real*8 xsecCCtotN(300,7)

@@ -251,7 +251,7 @@ C     ****************************************************
 C     By Yoshitaro Takaesu @KIAS MAY.23 2013
 C     
 C     The Effective Charged-Current QE Neutrino Cross Section 
-C     with a water-filled 1kton detector
+C     of a water-filled detector [cm^2/kton]
 C     ****************************************************
       implicitnone
       integer oi
@@ -291,7 +291,7 @@ C     ****************************************************
 C     By Yoshitaro Takaesu @KIAS AUG.12 2013
 C     
 C     The Effective Charged-Current Neutrino Cross Section 
-C     with a water-filled 1kton detector
+C     of a water-filled detectr [cm^2/kton]
 C     ****************************************************
       implicitnone
       integer oi
@@ -330,7 +330,7 @@ C     ****************************************************
 C     By Yoshitaro Takaesu @KIAS MAY.23 2013
 C
 C     The Effective NC Neutrino Cross Section 
-C     with a water-filled 1kton detector
+C     of a water-filled detector [cm^2/kton]
 C     ****************************************************
       implicitnone
       integer oi
