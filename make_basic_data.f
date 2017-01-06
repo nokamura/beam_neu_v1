@@ -10,7 +10,7 @@ C     GLOBAL VARIABLES
 C     CONSTANTS
 C     ARGUMENTS 
 C     LOCAL VARIABLES
-      integer i
+      integer i,iout
       integer binsize_factor_tmp,ihfunc_tmp,ihisto_tmp
       integer MH_tmp,nu_mode_tmp,detect_nu_tmp,ierr,ismear_tmp
       integer nbins_loc
@@ -398,48 +398,18 @@ CCC
       call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
 
       icc = 1
-      detect = 1
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ne)
-      detect = 2
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_nm)
-      detect = -1
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ae)
-      detect = -2
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
-
-      open(1,file="xsec_ccqe.dat",status="replace")
-      write(1,*) "# Neutrino CCQE cross section data"
-      write(1,*) "# Columns: Enu [GeV], xsecs for nu_e, nu_mu"
-     &     ,", bar nu_e, bar nu_mu []"
-      write(1,*) " "
-      do i = 0,nbins_loc-1
-         write(1,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
-     &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
-      enddo
-      close(1)
-      
+      iout = 1
+      open(iout,file="xsec_ccqe.dat",status="replace")
+      write(iout,*) "# Neutrino CCQE cross section data"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
 
       icc = 2
-      detect = 1
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ne)
-      detect = 2
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_nm)
-      detect = -1
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ae)
-      detect = -2
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
-
-      open(1,file="xsec_nc.dat",status="replace")
-      write(1,*) "# Neutrino NC cross section data"
-      write(1,*) "# Columns: Enu [GeV], xsecs for nu_e, nu_mu"
-     &     ,", bar nu_e, bar nu_mu []"
-      write(1,*) " "
-      do i = 0,nbins_loc-1
-         write(1,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
-     &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
-      enddo
-      close(1)
-
+      iout = 2
+      open(iout,file="xsec_nc.dat",status="replace")
+      write(iout,*) "# Neutrino NC cross section data"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
 
 
 c$$$c
@@ -595,6 +565,46 @@ C     ----------
      &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
       enddo
       close(1)
+      
+      return
+      end
+
+
+      subroutine write_xsec(iout,nbins_loc,xl)
+C     ****************************************************
+C     By Yoshitaro Takaesu @ U.Okayama JAN 06 2016
+C     ****************************************************
+      implicit none
+C     GLOBAL VARIABLES
+      include 'inc/params.inc'
+C     CONSTANTS
+C     ARGUMENTS       
+      integer nbins_loc
+      real*8 xl(0:maxnbin)
+C     LOCAL VARIABLES
+      integer i,iout
+      real*8 eventout_nm(maxnbin),eventout_am(maxnbin)
+      real*8 eventout_ne(maxnbin),eventout_ae(maxnbin)
+C     EXTERNAL FUNCTIONS
+C     ----------
+C     BEGIN CODE
+C     ----------
+      detect = 1               ! nu_e
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ne)
+      detect = 2               ! nu_mu
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_nm)
+      detect = -1              ! anti-nu_e
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ae)
+      detect = -2              ! anti-nu_mu
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
+
+      write(iout,*) "# Columns: Enu [GeV], xsecs for nu_e, nu_mu"
+     &     ,", bar nu_e, bar nu_mu []"
+      write(iout,*) " "
+      do i = 0,nbins_loc-1
+         write(iout,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
+     &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
+      enddo
       
       return
       end
