@@ -508,27 +508,29 @@ C     ARGUMENTS
       real*8 xl(0:maxnbin)
       character*2 exp
 C     LOCAL VARIABLES
-      character*12 file_name
 C     EXTERNAL FUNCTIONS
 C     ----------
 C     BEGIN CODE
 C     ----------
       beam = 1
-      file_name = "fluxn_"//exp//".dat"
-      call write_flux(file_name,nbins_loc,xl)
+      open(1,file="fluxn_"//exp//".dat",status="replace")
+      call write_flux(1,nbins_loc,xl)
+      close(1)
       
       beam = -1
-      file_name = "fluxa_"//exp//".dat"
-      call write_flux(file_name,nbins_loc,xl)
-      
+      open(1,file="fluxa_"//exp//".dat",status="replace")
+      call write_flux(1,nbins_loc,xl)
+      close(1)
+
       return
       end
 
 
-      subroutine write_flux(file_name,nbins_loc,xl)
-C     ****************************************************
+      subroutine write_flux(iout,nbins_loc,xl)
+C     ********************************************************
 C     By Yoshitaro Takaesu @ U.Okayama JAN 05 2016
-C     ****************************************************
+C     Modified: JAN 06 2016: Remove open close statements
+C     ********************************************************
       implicit none
 C     GLOBAL VARIABLES
       include 'inc/params.inc'
@@ -536,9 +538,8 @@ C     CONSTANTS
 C     ARGUMENTS       
       integer nbins_loc
       real*8 xl(0:maxnbin)
-      character*12 file_name
 C     LOCAL VARIABLES
-      integer i
+      integer i,iout
       real*8 eventout_nm(maxnbin),eventout_am(maxnbin)
       real*8 eventout_ne(maxnbin),eventout_ae(maxnbin)
 C     EXTERNAL FUNCTIONS
@@ -554,17 +555,15 @@ C     ----------
       nu_mode = -2              ! anti-nu_mu flux
       call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
       
-      open(1,file=file_name,status="replace")
-      write(1,*) "# neutrino flux data"
-      write(1,*) "# L = ", L, "km, OAB = ", oab,"deg."
-      write(1,*) "# Columns: Enu [GeV], fluxes for nu_e, nu_mu"
+      write(iout,*) "# neutrino flux data"
+      write(iout,*) "# L = ", L, "km, OAB = ", oab,"deg."
+      write(iout,*) "# Columns: Enu [GeV], fluxes for nu_e, nu_mu"
      &     ,", bar nu_e, bar nu_mu [1/cm^2/50MeV/10^{21}POT]"
-      write(1,*) " "
+      write(iout,*) " "
       do i = 0,nbins_loc-1
-         write(1,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
+         write(iout,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
      &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
       enddo
-      close(1)
       
       return
       end
