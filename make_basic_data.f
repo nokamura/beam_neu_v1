@@ -400,14 +400,14 @@ CCC
       icc = 1
       iout = 1
       open(iout,file="xsec_ccqe.dat",status="replace")
-      write(iout,*) "# Neutrino CCQE cross section data"
+      write(iout,*) "# Neutrino CCQE cross section of a water target"
       call write_xsec(iout,nbins_loc,xl)
       close(iout)
 
       icc = 2
       iout = 2
       open(iout,file="xsec_nc.dat",status="replace")
-      write(iout,*) "# Neutrino NC cross section data"
+      write(iout,*) "# Neutrino NC cross section of a water target"
       call write_xsec(iout,nbins_loc,xl)
       close(iout)
 
@@ -598,7 +598,7 @@ C     ----------
       call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
 
       write(iout,*) "# Columns: Enu [GeV], xsecs for nu_e, nu_mu"
-     &     ,", bar nu_e, bar nu_mu []"
+     &     ,", bar nu_e, bar nu_mu [cm^2/kton]"
       write(iout,*) " "
       do i = 0,nbins_loc-1
          write(iout,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
