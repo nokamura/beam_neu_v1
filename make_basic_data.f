@@ -30,85 +30,13 @@ CCC   save global parameters
       evform = evform_dat
       call output_flux
       call output_prob
-c      call output_xsec
+      call output_xsec
 c      call output_flux_xsec_prob
 
       xmin = 0d0
       xmax = 5.9d0
       basic_binsize = 0.01
       binsize_factor = 5
-         
-CCC     
-CCC     Xsec
-CCC     
-      ihfunc = 3
-      ihisto = 1
-      ismear = 1
-      binsize_loc = basic_binsize*binsize_factor
-      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-
-      iout = 1
-CCC   CC cross section
-      icc = 1
-      xsec_mode = 0
-      open(iout,file="xsec_ccqetot.dat",status="replace")
-      write(iout,*) "# Neutrino total CCQE cross section of a water"
-     &     ," target"
-      call write_xsec(iout,nbins_loc,xl)
-      close(iout)
-
-      xsec_mode = 1
-      open(iout,file="xsec_ccqe.dat",status="replace")
-      write(iout,*) "# Neutrino CCQE cross section (after CCQE cut)"
-     &     ," of a water target"
-      call write_xsec(iout,nbins_loc,xl)
-      close(iout)
-
-      xsec_mode = 2
-      open(iout,file="xsec_ccres.dat",status="replace")
-      write(iout,*) "# Neutrino CC resonant cross section"
-     &     ," (after CCQE cut) of a water target"
-      call write_xsec(iout,nbins_loc,xl)
-      close(iout)
-
-CCC   NC cross section
-      icc = 2
-      iout = 2
-      xsec_mode = 0
-      open(iout,file="xsec_nctot.dat",status="replace")
-      write(iout,*) "# Neutrino total NC cross section of a water"
-     &     ," target"
-      call write_xsec(iout,nbins_loc,xl)
-      close(iout)
-
-      xsec_mode = 1
-      open(iout,file="xsec_ncqe.dat",status="replace")
-      write(iout,*) "# Neutrino NCQE cross section of a water"
-     &     ," target"
-      call write_xsec(iout,nbins_loc,xl)
-      close(iout)
-
-      xsec_mode = 2
-      open(iout,file="xsec_ncres.dat",status="replace")
-      write(iout,*) "# Neutrino NC resonant cross section of a water"
-     &     ," target"
-      call write_xsec(iout,nbins_loc,xl)
-      close(iout)
-
-      xsec_mode = 3
-      open(iout,file="xsec_ncdi.dat",status="replace")
-      write(iout,*) "# Neutrino NCCI cross section of a water"
-     &     ," target"
-      call write_xsec(iout,nbins_loc,xl)
-      close(iout)
-
-      xsec_mode = 4
-      open(iout,file="xsec_ncco.dat",status="replace")
-      write(iout,*) "# Neutrino NCCoh + NCDiff cross section of a water"
-     &     ," target"
-      call write_xsec(iout,nbins_loc,xl)
-      close(iout)
-
 
 c
 c     Flux*P*xsec
@@ -331,6 +259,49 @@ CCC   reset global parameters to their initial values
       end
 
 
+      subroutine write_flux(iout,nbins_loc,xl)
+C     ********************************************************
+C     By Yoshitaro Takaesu @ U.Okayama JAN 05 2016
+C     Modified: JAN 06 2016: Remove open close statements
+C     ********************************************************
+      implicit none
+C     GLOBAL VARIABLES
+      include 'inc/params.inc'
+C     CONSTANTS
+C     ARGUMENTS       
+      integer nbins_loc
+      real*8 xl(0:maxnbin)
+C     LOCAL VARIABLES
+      integer i,iout
+      real*8 eventout_nm(maxnbin),eventout_am(maxnbin)
+      real*8 eventout_ne(maxnbin),eventout_ae(maxnbin)
+C     EXTERNAL FUNCTIONS
+C     ----------
+C     BEGIN CODE
+C     ----------
+      nu_mode = 1               ! nu_e flux
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ne)
+      nu_mode = 2               ! nu_mu flux
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_nm)
+      nu_mode = -1              ! anti-nu_e flux
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ae)
+      nu_mode = -2              ! anti-nu_mu flux
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
+      
+      write(iout,*) "# neutrino flux data"
+      write(iout,*) "# L = ", L, "km, OAB = ", oab,"deg."
+      write(iout,*) "# Columns: Enu [GeV], fluxes for nu_e, nu_mu"
+     &     ,", bar nu_e, bar nu_mu [1/cm^2/50MeV/10^{21}POT]"
+      write(iout,*) " "
+      do i = 0,nbins_loc-1
+         write(iout,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
+     &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
+      enddo
+      
+      return
+      end
+
+
       subroutine output_prob
 C     ****************************************************
 C     By Yoshitaro Takaesu @ U.Okayama JAN 16 2017
@@ -403,88 +374,6 @@ C     ----------
       call write_flux(1,nbins_loc,xl)
       close(1)
 
-      return
-      end
-
-
-      subroutine write_flux(iout,nbins_loc,xl)
-C     ********************************************************
-C     By Yoshitaro Takaesu @ U.Okayama JAN 05 2016
-C     Modified: JAN 06 2016: Remove open close statements
-C     ********************************************************
-      implicit none
-C     GLOBAL VARIABLES
-      include 'inc/params.inc'
-C     CONSTANTS
-C     ARGUMENTS       
-      integer nbins_loc
-      real*8 xl(0:maxnbin)
-C     LOCAL VARIABLES
-      integer i,iout
-      real*8 eventout_nm(maxnbin),eventout_am(maxnbin)
-      real*8 eventout_ne(maxnbin),eventout_ae(maxnbin)
-C     EXTERNAL FUNCTIONS
-C     ----------
-C     BEGIN CODE
-C     ----------
-      nu_mode = 1               ! nu_e flux
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ne)
-      nu_mode = 2               ! nu_mu flux
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_nm)
-      nu_mode = -1              ! anti-nu_e flux
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ae)
-      nu_mode = -2              ! anti-nu_mu flux
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
-      
-      write(iout,*) "# neutrino flux data"
-      write(iout,*) "# L = ", L, "km, OAB = ", oab,"deg."
-      write(iout,*) "# Columns: Enu [GeV], fluxes for nu_e, nu_mu"
-     &     ,", bar nu_e, bar nu_mu [1/cm^2/50MeV/10^{21}POT]"
-      write(iout,*) " "
-      do i = 0,nbins_loc-1
-         write(iout,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
-     &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
-      enddo
-      
-      return
-      end
-
-
-      subroutine write_xsec(iout,nbins_loc,xl)
-C     ****************************************************
-C     By Yoshitaro Takaesu @ U.Okayama JAN 06 2016
-C     ****************************************************
-      implicit none
-C     GLOBAL VARIABLES
-      include 'inc/params.inc'
-C     CONSTANTS
-C     ARGUMENTS       
-      integer nbins_loc
-      real*8 xl(0:maxnbin)
-C     LOCAL VARIABLES
-      integer i,iout
-      real*8 eventout_nm(maxnbin),eventout_am(maxnbin)
-      real*8 eventout_ne(maxnbin),eventout_ae(maxnbin)
-C     EXTERNAL FUNCTIONS
-C     ----------
-C     BEGIN CODE
-C     ----------
-      detect = 1                ! nu_e
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ne)
-      detect = 2                ! nu_mu
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_nm)
-      detect = -1               ! anti-nu_e
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ae)
-      detect = -2               ! anti-nu_mu
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
-      write(iout,*) "# Columns: Enu [GeV], xsecs for nu_e, nu_mu"
-     &     ,", bar nu_e, bar nu_mu [cm^2/kton]"
-      write(iout,*) " "
-      do i = 0,nbins_loc-1
-         write(iout,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
-     &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
-      enddo
-      
       return
       end
 
@@ -577,6 +466,137 @@ C     ----------
       enddo
       close(1)
 
+      return
+      end
+
+
+      subroutine output_xsec
+C     ****************************************************
+C     By Yoshitaro Takaesu @ U.Okayama JAN 16 2017
+C     ****************************************************
+      implicit none
+C     GLOBAL VARIABLES
+      include 'inc/params.inc'
+C     LOCAL VARIABLES
+      integer nbins_loc,iout
+      character*2 exp
+      double precision xmin,xmax,binsize_loc
+      double precision xl(0:maxnbin),yyl(0:maxnbin)
+C     ----------
+C     BEGIN CODE
+C     ----------
+      ihfunc = 3
+      ihisto = 1
+      ismear = 1
+
+      xmin = 0d0
+      xmax = 5.9d0
+      basic_binsize = 0.01
+      binsize_factor = 5
+      binsize_loc = basic_binsize*binsize_factor
+      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
+
+      iout = 1
+CCC   CC cross section
+      icc = 1
+      xsec_mode = 0
+      open(iout,file="xsec_ccqetot.dat",status="replace")
+      write(iout,*) "# Neutrino total CCQE cross section of a water"
+     &     ," target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+      xsec_mode = 1
+      open(iout,file="xsec_ccqe.dat",status="replace")
+      write(iout,*) "# Neutrino CCQE cross section (after CCQE cut)"
+     &     ," of a water target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+      xsec_mode = 2
+      open(iout,file="xsec_ccres.dat",status="replace")
+      write(iout,*) "# Neutrino CC resonant cross section"
+     &     ," (after CCQE cut) of a water target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+CCC   NC cross section
+      icc = 2
+      iout = 2
+      xsec_mode = 0
+      open(iout,file="xsec_nctot.dat",status="replace")
+      write(iout,*) "# Neutrino total NC cross section of a water"
+     &     ," target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+      xsec_mode = 1
+      open(iout,file="xsec_ncqe.dat",status="replace")
+      write(iout,*) "# Neutrino NCQE cross section of a water"
+     &     ," target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+      xsec_mode = 2
+      open(iout,file="xsec_ncres.dat",status="replace")
+      write(iout,*) "# Neutrino NC resonant cross section of a water"
+     &     ," target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+      xsec_mode = 3
+      open(iout,file="xsec_ncdi.dat",status="replace")
+      write(iout,*) "# Neutrino NCCI cross section of a water"
+     &     ," target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+      xsec_mode = 4
+      open(iout,file="xsec_ncco.dat",status="replace")
+      write(iout,*) "# Neutrino NCCoh + NCDiff cross section of a water"
+     &     ," target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+      return
+      end
+
+
+      subroutine write_xsec(iout,nbins_loc,xl)
+C     ****************************************************
+C     By Yoshitaro Takaesu @ U.Okayama JAN 06 2016
+C     ****************************************************
+      implicit none
+C     GLOBAL VARIABLES
+      include 'inc/params.inc'
+C     CONSTANTS
+C     ARGUMENTS       
+      integer nbins_loc
+      real*8 xl(0:maxnbin)
+C     LOCAL VARIABLES
+      integer i,iout
+      real*8 eventout_nm(maxnbin),eventout_am(maxnbin)
+      real*8 eventout_ne(maxnbin),eventout_ae(maxnbin)
+C     EXTERNAL FUNCTIONS
+C     ----------
+C     BEGIN CODE
+C     ----------
+      detect = 1                ! nu_e
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ne)
+      detect = 2                ! nu_mu
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_nm)
+      detect = -1               ! anti-nu_e
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_ae)
+      detect = -2               ! anti-nu_mu
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
+      write(iout,*) "# Columns: Enu [GeV], xsecs for nu_e, nu_mu"
+     &     ,", bar nu_e, bar nu_mu [cm^2/kton]"
+      write(iout,*) " "
+      do i = 0,nbins_loc-1
+         write(iout,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
+     &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
+      enddo
+      
       return
       end
 
