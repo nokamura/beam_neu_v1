@@ -397,17 +397,65 @@ CCC
       binsize_loc = basic_binsize*binsize_factor
       call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
 
-      icc = 1
       iout = 1
-      open(iout,file="xsec_ccqe.dat",status="replace")
-      write(iout,*) "# Neutrino CCQE cross section of a water target"
+CCC   CC cross section
+      icc = 1
+      xsec_mode = 0
+      open(iout,file="xsec_ccqetot.dat",status="replace")
+      write(iout,*) "# Neutrino total CCQE cross section of a water"
+     &     ," target"
       call write_xsec(iout,nbins_loc,xl)
       close(iout)
 
+      xsec_mode = 1
+      open(iout,file="xsec_ccqe.dat",status="replace")
+      write(iout,*) "# Neutrino CCQE cross section (after CCQE cut)"
+     &     ," of a water target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+      xsec_mode = 2
+      open(iout,file="xsec_ccres.dat",status="replace")
+      write(iout,*) "# Neutrino CC resonant cross section"
+     &     ," (after CCQE cut) of a water target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+CCC   NC cross section
       icc = 2
       iout = 2
-      open(iout,file="xsec_nc.dat",status="replace")
-      write(iout,*) "# Neutrino NC cross section of a water target"
+      xsec_mode = 0
+      open(iout,file="xsec_nctot.dat",status="replace")
+      write(iout,*) "# Neutrino total NC cross section of a water"
+     &     ," target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+      xsec_mode = 1
+      open(iout,file="xsec_ncqe.dat",status="replace")
+      write(iout,*) "# Neutrino NCQE cross section of a water"
+     &     ," target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+      xsec_mode = 2
+      open(iout,file="xsec_ncres.dat",status="replace")
+      write(iout,*) "# Neutrino NC resonant cross section of a water"
+     &     ," target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+      xsec_mode = 3
+      open(iout,file="xsec_ncdi.dat",status="replace")
+      write(iout,*) "# Neutrino NCCI cross section of a water"
+     &     ," target"
+      call write_xsec(iout,nbins_loc,xl)
+      close(iout)
+
+      xsec_mode = 4
+      open(iout,file="xsec_ncco.dat",status="replace")
+      write(iout,*) "# Neutrino NCCoh + NCDiff cross section of a water"
+     &     ," target"
       call write_xsec(iout,nbins_loc,xl)
       close(iout)
 
@@ -588,15 +636,14 @@ C     EXTERNAL FUNCTIONS
 C     ----------
 C     BEGIN CODE
 C     ----------
-      detect = 1               ! nu_e
+      detect = 1                ! nu_e
       call wrap_MakeHisto1D(nbins_loc,xl,eventout_ne)
-      detect = 2               ! nu_mu
+      detect = 2                ! nu_mu
       call wrap_MakeHisto1D(nbins_loc,xl,eventout_nm)
-      detect = -1              ! anti-nu_e
+      detect = -1               ! anti-nu_e
       call wrap_MakeHisto1D(nbins_loc,xl,eventout_ae)
-      detect = -2              ! anti-nu_mu
+      detect = -2               ! anti-nu_mu
       call wrap_MakeHisto1D(nbins_loc,xl,eventout_am)
-
       write(iout,*) "# Columns: Enu [GeV], xsecs for nu_e, nu_mu"
      &     ,", bar nu_e, bar nu_mu [cm^2/kton]"
       write(iout,*) " "

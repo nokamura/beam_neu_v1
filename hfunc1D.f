@@ -260,18 +260,33 @@ c$$$         Pm2e = abs(z(22)) ! for re-evaluation paper
 CCC     Fluxes
          flux = flux_beam(beam,oab,nu_mode,E,L)
 
-CCC     Cross sections
+CCCC     Cross sections
 c         if (ismear.eq.0) then
 c            frac = 0d0
 c            if (iCCQE.eq.1) then
-c               call get_xsecfrac3(E,icc,1,1,detect,frac1) ! CCQE-H
-c               call get_xsecfrac3(E,icc,1,2,detect,frac2) ! CCQE-O
-c               frac = frac +fxsec_CCQE*(frac1 +frac2)
+CCC      CCQE cross section output
+C$$$         open(1,file="xsec_ccqe.dat",status="relace")
+C$$$         write(1,*) "# Neutrino CCQE cross section of a water"
+C$$$     &        ," target"
+C$$$         write(1,*) "# Columns: Enu [GeV], xsecs for nu_e, nu_mu"
+C$$$     &        ,", bar nu_e, bar nu_mu [cm^2/kton]"
+C$$$         write(1,*) " "
+C$$$         call get_xsecfrac3(E,icc,1,1,detect,frac1) ! CCQE-H
+C$$$         call get_xsecfrac3(E,icc,1,2,detect,frac2) ! CCQE-O
+C$$$         frac_ccqe = frac1 +frac2
+C$$$         write(1,*) E, xsec_CCQE(detect,E)*(frac1 +frac2)
+C$$$         close(1)
 c            endif
 c            if (iCCRes.eq.1) then
-c               call get_xsecfrac3(E,icc,1,3,detect,frac3) ! CCRes-H
-c               call get_xsecfrac3(E,icc,1,4,detect,frac4) ! CCRes-O
-c               frac = frac +fxsec_CCRes*(frac3 +frac4)
+CCC      CCQE cross section output
+C$$$         open(1,file="xsec_ccres.dat",status="relace")
+C$$$         write(1,*) "# Neutrino CC resonant cross section of a water"
+C$$$     &        ," target"
+C$$$         call get_xsecfrac3(E,icc,1,3,detect,frac3) ! CCQE-H
+C$$$         call get_xsecfrac3(E,icc,1,4,detect,frac4) ! CCQE-O
+C$$$         frac_ccres = frac3 +frac4
+C$$$         write(1,*) E, xsec_CCQE(detect,E)*(frac3 +frac4)
+C$$$         close(1)
 c            endif
 cc            xsec = xsec_CC(detect,E)*frac  ! for re-evaluation paper
 cc            xsec = fxsec_CCQE*xsec_CCQE(detect,E)
@@ -279,7 +294,7 @@ cc            xsec = xsec_CCQE(detect,E)
 c            xsec = xsec_CCQE(detect,E)*frac
 c         elseif (ismear.eq.1) then
 c            xsec = xsec_CC(detect,E) ! for re-evaluation paper
-            xsec = xsec_CCQE(detect,E)
+         xsec = xsec_CCQE(detect,E)
 c         endif
 
       elseif (icc.eq.2) then
@@ -315,6 +330,7 @@ c      xsec = xsec_CC(detect,E)/(33.6d30*10) ! bar{nu}_e-H2O xsec/proton
 c      xsec = xsec_CC(detect,E)/(3.34d31*8)*4.89d33/18d0 ! nu_e-H2O xsec/neutron scaled to 1kton LS
 c      xsec = xsec_CC(detect,E)/(3.34d31*10)*6.24d33/18d0 ! bar{nu}_e-H2O xsec/proton scaled to 1kton LS
 
+CCC   For main analysis
       if (ihfunc.eq.0) then
          hrho = frho*rho
          if (icc.eq.1) then
@@ -329,13 +345,41 @@ c            hfunc1D = ff*flux*xsec*fD*V*YY
 c     &           *prob(nu_mode,detect,E,L,s212_2,s223_2,s213_2,hdm21_2
 c     &           ,hdm31_2,hdCP,hrho,oct_23)
          endif
+
+CCC   For flux output
       elseif (ihfunc.eq.1) then
          hfunc1D = flux
+
+CCC   For probability output
       elseif (ihfunc.eq.2) then
          hfunc1D = prob(nu_mode,detect,E,L,s212_2,s223_2,s213_2,hdm21_2
      &        ,hdm31_2,hdCP,rho,oct_23)
+
+CCC   For cross section output
       elseif (ihfunc.eq.3) then
-         hfunc1D = xsec
+         if (icc.eq.1) then
+            if (xsec_mode.eq.0) then ! total CCQE cross section
+               hfunc1D = xsec
+            elseif (xsec_mode.eq.1) then ! CCQE cross section after CCQE cut
+               call get_xsecfrac3(E,icc,1,1,detect,frac1)
+               call get_xsecfrac3(E,icc,1,2,detect,frac2)
+               hfunc1D = xsec*(frac1 +frac2)
+            elseif (xsec_mode.eq.2) then ! CC resonant cross section after CCQE cut
+               call get_xsecfrac3(E,icc,1,3,detect,frac1)
+               call get_xsecfrac3(E,icc,1,4,detect,frac2)
+               hfunc1D = xsec*(frac1 +frac2)
+            endif
+         elseif (icc.eq.2) then
+            if (xsec_mode.eq.0) then ! total NC cross section
+               hfunc1D = xsec
+            else
+               call get_xsecfrac3(E,icc,1,xsec_mode,detect,frac1)
+CCCCCC            xsec_mode = 1:NCQE 2:NCRes 3:NCDI 4:NCCoh+NCDI 5:NC total 
+               hfunc1D = xsec*frac1
+            endif
+         endif
+
+CCC   For other free output
       elseif (ihfunc.eq.4) then
          hfunc1D = flux*xsec*V*YY
      &        *prob(nu_mode,detect,E,L,s212_2,s223_2,s213_2,hdm21_2

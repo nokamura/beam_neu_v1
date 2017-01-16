@@ -67,8 +67,8 @@
       real*8 Keffe(3),Keffmu(3),KPe2m(3),KPm2e(3)  
       common /err_kr3/ Keffe,Keffmu,KPe2m,KPm2e  
 
-      integer icc,MHH
-      common /other/ icc,MHH
+      integer icc,MHH,xsec_mode
+      common /other/ icc,MHH,xsec_mode
 
       integer maxnbin,nout,zdim,eventdim,maxnparam
       integer ndetect,nmode,nmode_rec,nmode_like,imaxint
