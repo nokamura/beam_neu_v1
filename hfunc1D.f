@@ -341,15 +341,13 @@ c     &           *prob_approx3(nu_mode,detect,E,L,s212_2,s223_2,s213_2
 c     &           ,hdm21_2,hdm31_2,hdCP,hrho,oct_23)
          elseif (icc.eq.2) then
             hfunc1D = flux*xsec*fD*V*YY
-c            hfunc1D = ff*flux*xsec*fD*V*YY
+c     hfunc1D = ff*flux*xsec*fD*V*YY
 c     &           *prob(nu_mode,detect,E,L,s212_2,s223_2,s213_2,hdm21_2
 c     &           ,hdm31_2,hdCP,hrho,oct_23)
          endif
-
 CCC   For flux output
       elseif (ihfunc.eq.1) then
          hfunc1D = flux
-
 CCC   For probability output
       elseif (ihfunc.eq.2) then
          hfunc1D = prob(nu_mode,detect,E,L,s212_2,s223_2,s213_2,hdm21_2

@@ -72,9 +72,18 @@
 
       integer maxnbin,nout,zdim,eventdim,maxnparam
       integer ndetect,nmode,nmode_rec,nmode_like,imaxint
-      parameter (maxnbin=1000,zdim=200,eventdim=4,nout=6)
+      parameter (maxnbin=1500,zdim=200,eventdim=4,nout=6)
       parameter (maxnparam=100,ndetect=3)
       parameter (nmode=4) ! 1:e 2:mu 3:pi0 4:gamma
       parameter (nmode_rec=6) ! 1:e>e 2:mu>mu 3:pi0 4:gamma 5:mu>e 6:e>mu
       parameter (nmode_like=2) ! 1:e-like 2:mu-like
       parameter (imaxint=4)
+
+
+      integer binsize_factor_tmp,MH_tmp,icc_tmp
+      integer nu_mode_tmp,detect_nu_tmp,ihfunc_tmp,ihisto_tmp,ismear_tmp
+      double precision basic_binsize_tmp,L_tmp,V_tmp,Y_tmp,iD_tmp
+      double precision rho_tmp,oab_tmp
+      common /par_tmp/ binsize_factor_tmp,MH_tmp,icc_tmp,nu_mode_tmp
+     &	     ,detect_nu_tmp,ihfunc_tmp,ihisto_tmp,ismear_tmp
+     &	     ,basic_binsize_tmp,L_tmp,V_tmp,Y_tmp,iD_tmp,rho_tmp,oab_tmp
