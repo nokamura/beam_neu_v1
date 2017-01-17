@@ -5,22 +5,7 @@ C     ****************************************************
       implicit none
 C     GLOBAL VARIABLES
       include 'inc/params.inc'
-      include 'inc/main.inc'
       include 'inc/minfunc.inc'
-C     LOCAL VARIABLES
-      integer i,iout
-      integer nbins_loc,ierr
-      real*8 eventout(maxnbin),heventout(maxnbin),neventout
-      real*8 E,frac,eventout2(maxnbin)
-      real*8 eventout_nm(maxnbin),eventout_am(maxnbin)
-      real*8 eventout_ne(maxnbin),eventout_ae(maxnbin)
-      real*8 xmin,xmax,binsize_loc
-      real*8 xl(0:maxnbin),yyl(0:maxnbin)
-      character*2 exp
-      character*12 file_name      
-C     EXTERNAL FUNCTIONS
-      real*8 hfunc1D
-      external hfunc1D
 C     ----------
 C     BEGIN CODE
 C     ----------
@@ -31,75 +16,8 @@ CCC   save global parameters
       call output_flux
       call output_prob
       call output_xsec
-c      call output_flux_xsec_prob
+      call output_flux_xsec_prob
 
-      xmin = 0d0
-      xmax = 5.9d0
-      basic_binsize = 0.01
-      binsize_factor = 5
-
-c
-c     Flux*P*xsec
-c     
-      L = 295
-      V = 22.5d0
-      Y = 5d0
-c      MHH = 1
-c      basic_binsize = 0.01
-c      binsize_factor = 5
-      ismear = 0
-      ihfunc = 4
-      ihisto = 2
-      icc = 1
-c      oab = 0.5
-c      rho = 3.0
-c      iD = 3
-
-      binsize_loc = basic_binsize*binsize_factor
-      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
-
-CCC   nu_e events
-      detect = 1
-      do i = 0,nbins_loc-1
-         eventout2(i+1) = 0d0
-      enddo      
-
-CCCCCC from nu_e flux
-      nu_mode = 1
-      call wrap_MakeHisto1D(nbins_loc,xl,eventout)
-      do i = 0,nbins_loc-1
-         eventout2(i+1) = eventout2(i+1) +eventout(i+1)         
-      enddo
-C$$$CCCCCC from nu_mu flux
-C$$$      nu_mode = 2
-C$$$      call wrap_MakeHisto1D(nbins_loc,xl,eventout)
-C$$$      do i = 0,nbins_loc-1
-C$$$         eventout2(i+1) = eventout2(i+1) +eventout(i+1)
-C$$$      enddo
-C$$$CCCCCC from anti-nu_e flux
-C$$$      nu_mode = -1
-C$$$      call wrap_MakeHisto1D(nbins_loc,xl,eventout)
-C$$$      do i = 0,nbins_loc-1
-C$$$         eventout2(i+1) = eventout2(i+1) +eventout(i+1)
-C$$$      enddo
-C$$$CCCCCC from anti-nu_mu flux
-C$$$      nu_mode = -2
-C$$$      call wrap_MakeHisto1D(nbins_loc,xl,eventout)
-C$$$      do i = 0,nbins_loc-1
-C$$$         eventout2(i+1) = eventout2(i+1) +eventout(i+1)
-C$$$      enddo
-
-CCCCCC output event numbers
-      open(1,file="flux_P_xsec_ne.dat",status="replace")
-      do i = 0,nbins_loc-1
-c         write(1,*) xl(i),eventout2(i+1)
-         write(1,*) xl(i),eventout(i+1)
-      enddo
-      close(1)      
-
-CCC   reset global parameters to their initial values
-      call reset_tmp_to_params
-      
       return
       end
 
@@ -596,6 +514,123 @@ C     ----------
          write(iout,*) (xl(i) +xl(i+1))/2d0,eventout_ne(i+1)
      &        ,eventout_nm(i+1),eventout_ae(i+1),eventout_am(i+1)
       enddo
+      
+      return
+      end
+
+
+      subroutine output_flux_xsec_prob
+C     ****************************************************
+C     By Yoshitaro Takaesu @ U.Okayama JAN 17 2017
+C     ****************************************************
+      implicit none
+C     GLOBAL VARIABLES
+      include 'inc/params.inc'
+C     LOCAL VARIABLES
+      integer nbins_loc,iout,i
+      character*2 exp
+      double precision xmin,xmax,binsize_loc
+      double precision xl(0:maxnbin),yyl(0:maxnbin)
+      double precision eventout(maxnbin),eventout2(maxnbin)
+C     ----------
+C     BEGIN CODE
+C     ----------
+      ihfunc = 4
+      ihisto = 2
+      ismear = 0
+      L = 295
+      V = 22.5d0
+      Y = 7.8d0
+
+      xmin = 0d0
+      xmax = 5.9d0
+      basic_binsize = 0.0046
+      binsize_factor = 10
+      binsize_loc = basic_binsize*binsize_factor
+      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
+
+      beam = 1
+      icc = 1
+CCC   nu_e events
+      detect = 1
+      call write_flux_xsec_prob(nbins_loc,xl)
+CCC   nu_mu events
+      detect = 2
+      call write_flux_xsec_prob(nbins_loc,xl)
+CCC   anti-nu_e events
+      detect = -1
+      call write_flux_xsec_prob(nbins_loc,xl)
+CCC   anti-nu_mu events
+      detect = -2
+      call write_flux_xsec_prob(nbins_loc,xl)
+
+CCC   reset global parameters to their initial values
+      call reset_tmp_to_params
+
+      return
+      end
+
+
+      subroutine write_flux_xsec_prob(nbins_loc,xl)
+C     ****************************************************
+C     By Yoshitaro Takaesu @ U.Okayama JAN 17 2017
+C     ****************************************************
+      implicit none
+C     GLOBAL VARIABLES
+      include 'inc/params.inc'
+C     ARGUMENTS
+      integer nbins_loc
+      double precision xl(0:maxnbin)
+C     LOCAL VARIABLES
+      integer i
+      character*2 exp,cnu_detect
+      double precision eventout(maxnbin),eventout2(maxnbin)
+C     ----------
+C     BEGIN CODE
+C     ----------
+      do i = 0,nbins_loc-1
+         eventout2(i+1) = 0d0
+      enddo      
+
+      if (detect.eq.1) cnu_detect = "ne"
+      if (detect.eq.2) cnu_detect = "nm"
+      if (detect.eq.3) cnu_detect = "nt"
+      if (detect.eq.-1) cnu_detect = "ae"
+      if (detect.eq.-2) cnu_detect = "am"
+      if (detect.eq.-3) cnu_detect = "at"
+
+CCCCCC from nu_e flux
+      nu_mode = 1
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout)
+      do i = 0,nbins_loc-1
+         eventout2(i+1) = eventout2(i+1) +eventout(i+1)
+      enddo
+CCCCCC from nu_mu flux
+      nu_mode = 2
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout)
+      do i = 0,nbins_loc-1
+         eventout2(i+1) = eventout2(i+1) +eventout(i+1)
+      enddo
+CCCCCC from anti-nu_e flux
+      nu_mode = -1
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout)
+      do i = 0,nbins_loc-1
+         eventout2(i+1) = eventout2(i+1) +eventout(i+1)
+      enddo
+CCCCCC from anti-nu_mu flux
+      nu_mode = -2
+      call wrap_MakeHisto1D(nbins_loc,xl,eventout)
+      do i = 0,nbins_loc-1
+         eventout2(i+1) = eventout2(i+1) +eventout(i+1)
+      enddo
+
+CCCCCC output event numbers
+      open(1,file="flux_P_xsec_"//cnu_detect//".dat",status="replace")
+      do i = 0,nbins_loc-1
+         write(1,*) xl(i),eventout2(i+1)
+c         write(1,*) xl(i),eventout(i+1)
+      enddo
+      close(1)      
       
       return
       end
