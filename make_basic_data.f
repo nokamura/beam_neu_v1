@@ -33,16 +33,9 @@ C     GLOBAL VARIABLES
       basic_binsize_tmp = basic_binsize
       binsize_factor_tmp = binsize_factor
       MH_tmp = MHH
-      L_tmp = L
-      V_tmp = V
       Y_tmp = Y
-      icc_tmp = icc
-      nu_mode_tmp = nu_mode
-      detect_nu_tmp = detect
       ihfunc_tmp = ihfunc
       ihisto_tmp = ihisto
-      rho_tmp = rho
-      oab_tmp = oab      
       ismear_tmp = ismear
     
       return
@@ -60,16 +53,9 @@ C     GLOBAL VARIABLES
       basic_binsize = basic_binsize_tmp
       binsize_factor = binsize_factor_tmp
       MHH = MH_tmp
-      L = L_tmp
-      V = V_tmp
       Y = Y_tmp
-      icc = icc_tmp
-      nu_mode = nu_mode_tmp
-      detect = detect_nu_tmp
       ihfunc = ihfunc_tmp
       ihisto = ihisto_tmp
-      rho = rho_tmp
-      oab = oab_tmp
       ismear = ismear_tmp
     
       return
@@ -177,6 +163,37 @@ CCC   reset global parameters to their initial values
       end
 
 
+      subroutine write_flux_det(exp,nbins_loc,xl)
+C     ****************************************************
+C     By Yoshitaro Takaesu @ U.Okayama  JAN 05 2016
+C     ****************************************************
+      implicit none
+C     GLOBAL VARIABLES
+      include 'inc/params.inc'
+C     CONSTANTS
+C     ARGUMENTS       
+      integer nbins_loc
+      real*8 xl(0:maxnbin)
+      character*2 exp
+C     LOCAL VARIABLES
+C     EXTERNAL FUNCTIONS
+C     ----------
+C     BEGIN CODE
+C     ----------
+      beam = 1
+      open(1,file="fluxn_"//exp//".dat",status="replace")
+      call write_flux(1,nbins_loc,xl)
+      close(1)
+      
+      beam = -1
+      open(1,file="fluxa_"//exp//".dat",status="replace")
+      call write_flux(1,nbins_loc,xl)
+      close(1)
+
+      return
+      end
+
+
       subroutine write_flux(iout,nbins_loc,xl)
 C     ********************************************************
 C     By Yoshitaro Takaesu @ U.Okayama JAN 05 2016
@@ -260,37 +277,6 @@ c      call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
 
 CCC   reset global parameters to their initial values
       call reset_tmp_to_params
-
-      return
-      end
-
-
-      subroutine write_flux_det(exp,nbins_loc,xl)
-C     ****************************************************
-C     By Yoshitaro Takaesu @ U.Okayama  JAN 05 2016
-C     ****************************************************
-      implicit none
-C     GLOBAL VARIABLES
-      include 'inc/params.inc'
-C     CONSTANTS
-C     ARGUMENTS       
-      integer nbins_loc
-      real*8 xl(0:maxnbin)
-      character*2 exp
-C     LOCAL VARIABLES
-C     EXTERNAL FUNCTIONS
-C     ----------
-C     BEGIN CODE
-C     ----------
-      beam = 1
-      open(1,file="fluxn_"//exp//".dat",status="replace")
-      call write_flux(1,nbins_loc,xl)
-      close(1)
-      
-      beam = -1
-      open(1,file="fluxa_"//exp//".dat",status="replace")
-      call write_flux(1,nbins_loc,xl)
-      close(1)
 
       return
       end
@@ -538,12 +524,14 @@ C     ----------
       ihfunc = 4
       ihisto = 2
       ismear = 0
-      L = 295
-      V = 22.5d0
-      Y = 7.8d0
 
-      xmin = 0d0
-      xmax = 5.9d0
+      Y = 7.8d0
+      L = SL
+      V = SV
+      oab = SOAB
+
+      xmin = 0.4d0
+      xmax = 5.0d0
       basic_binsize = 0.0046
       binsize_factor = 10
       binsize_loc = basic_binsize*binsize_factor
@@ -627,8 +615,7 @@ CCCCCC from anti-nu_mu flux
 CCCCCC output event numbers
       open(1,file="flux_P_xsec_"//cnu_detect//".dat",status="replace")
       do i = 0,nbins_loc-1
-         write(1,*) xl(i),eventout2(i+1)
-c         write(1,*) xl(i),eventout(i+1)
+         write(1,*) (xl(i) +xl(i+1))/2d0,eventout2(i+1)
       enddo
       close(1)      
       

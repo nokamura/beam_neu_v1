@@ -379,7 +379,29 @@ CCCCCC            xsec_mode = 1:NCQE 2:NCRes 3:NCDI 4:NCCoh+NCDI 5:NC total
 
 CCC   For other free output
       elseif (ihfunc.eq.4) then
-         hfunc1D = flux*xsec*V*YY
+C$$$         if (icc.eq.1) then
+C$$$            if (xsec_mode.eq.0) then ! total CCQE cross section
+C$$$               xsec = xsec
+C$$$            elseif (xsec_mode.eq.1) then ! CCQE cross section after CCQE cut
+               call get_xsecfrac3(E,1,1,1,detect,frac1)
+               call get_xsecfrac3(E,1,1,2,detect,frac2)
+c               xsec = xsec*(frac1 +frac2)
+C$$$            elseif (xsec_mode.eq.2) then ! CC resonant cross section after CCQE cut
+C$$$               call get_xsecfrac3(E,icc,1,3,detect,frac1)
+C$$$               call get_xsecfrac3(E,icc,1,4,detect,frac2)
+C$$$               xsec = xsec*(frac1 +frac2)
+C$$$            endif
+C$$$         elseif (icc.eq.2) then
+C$$$            if (xsec_mode.eq.0) then ! total NC cross section
+C$$$               xsec = xsec
+C$$$            else
+C$$$               call get_xsecfrac3(E,icc,1,xsec_mode,detect,frac1)
+C$$$CCCCCC            xsec_mode = 1:NCQE 2:NCRes 3:NCDI 4:NCCoh+NCDI 5:NC total 
+C$$$               xsec = xsec*frac1
+C$$$            endif
+C$$$         endif
+
+         hfunc1D = flux*xsec*(frac1 +frac2)*V*YY
      &        *prob(nu_mode,detect,E,L,s212_2,s223_2,s213_2,hdm21_2
      &        ,hdm31_2,hdCP,rho,oct_23)
       endif
