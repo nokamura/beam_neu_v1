@@ -403,7 +403,7 @@ C$$$         endif
 
          hfunc1D = flux*xsec*(frac1 +frac2)*V*YY
      &        *prob(nu_mode,detect,E,L,s212_2,s223_2,s213_2,hdm21_2
-     &        ,hdm31_2,hdCP,rho,oct_23)
+     &        ,hdm31_2,hdCP,rho,oct_23)  ! [1/GeV]
       endif
 
       return

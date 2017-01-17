@@ -82,12 +82,12 @@ C     LOCAL VARIABLES
 
       xmin = 0d0
       xmax = 5.9d0
-      basic_binsize = 0.01
+      basic_binsize = 0.01d0
       binsize_factor = 5
       binsize_loc = basic_binsize*binsize_factor
       call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
 
-      L = 1 ! km
+      L = 1d0 ! km
 
       oab = 0d0
       exp = "00"
@@ -395,7 +395,7 @@ C     ----------
 
       xmin = 0d0
       xmax = 5.9d0
-      basic_binsize = 0.01
+      basic_binsize = 0.01d0
       binsize_factor = 5
       binsize_loc = basic_binsize*binsize_factor
       call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
@@ -532,9 +532,7 @@ C     ----------
 
       xmin = 0.4d0
       xmax = 5.0d0
-      basic_binsize = 0.0046
-      binsize_factor = 10
-      binsize_loc = basic_binsize*binsize_factor
+      binsize_loc = 0.046d0
       call bining_x(xmin,xmax,binsize_loc,nbins_loc,xl,yyl)
 
       beam = 1
