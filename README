@@ -27,8 +27,8 @@
 # ROUTINES
   ./run.sh: core program for event number calculation & minimization
   ./minimize_dchi2.sh: for minimization, scanning input CP phase
-  ./chi2_oab_all.sh: for Fig.9 in Oki paper
-  ./chi2_oabfar_all.sh: for Fig.7,8 in Re-evaluation paper
+  ./chi2_oab_all.sh: for Fig.9 in Oki paper 1209.2763
+  ./chi2_oabfar_all.sh: for Fig.7,8 in Re-evaluation paper 0901.1517
 
 # OLD ROUTINES (NOT USED ANYMORE)
   ./job_dchi2.sh: for minimization, scanning ndiv points on dCP
@@ -38,7 +38,7 @@
 # HOW TO RUN
 1. basic mode
    ./run.sh [run_name] [run_mode] [display] [mail]
-   run_mode: 1:Serial mode 2:Parallel mode
+   run_mode: 0:Serial mode 1:Parallel mode
    display: 0: don't display the shell output 1:display the output
    mail: 0:don't send a notification mail when a job is finished 1:send
 
@@ -53,7 +53,7 @@
 
 
 # HOW TO perform program test
-./test.sh
+./test.sh (under construction)
 
 
 # Cautions
