@@ -11,12 +11,11 @@ C     CONSTANTS
 C     ARGUMENTS 
 C     LOCAL VARIABLES
       integer i
-      integer binsize_factor_tmp,ihfunc_tmp,ihisto_tmp
-      integer MH_tmp,nu_mode_tmp,detect_nu_tmp,ierr
-      real*8 Emin_tmp,Emax_tmp,basic_binsize_tmp,L_tmp,V_tmp,icc_tmp
+      integer ierr
+      real*8 Emin_tmp,Emax_tmp
       real*8 eventout(maxnbin),heventout(maxnbin),neventout
       real*8 event_tmp(maxnbin),hevent_tmp(maxnbin),nevent_tmp
-      real*8 E,frac,eventout2(maxnbin),rho_tmp,oab_tmp,frho_tmp,iD_tmp
+      real*8 E,frac,eventout2(maxnbin),frho_tmp
       integer nbins_loc
       real*8 xmin,xmax,binsize_loc
       real*8 xl(0:maxnbin),yyl(0:maxnbin)
